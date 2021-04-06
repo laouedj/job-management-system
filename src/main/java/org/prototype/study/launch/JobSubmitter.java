@@ -2,8 +2,7 @@ package org.prototype.study.launch;
 
 import org.prototype.study.job.Job;
 
-public interface JobRunner {
+public interface JobSubmitter extends Runnable {
 
-    void execute(Job job);
-
+    void submit(Job job) ;
 }

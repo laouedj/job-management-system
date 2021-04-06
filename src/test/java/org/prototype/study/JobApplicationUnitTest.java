@@ -21,11 +21,12 @@ public class JobApplicationUnitTest
     }
 
     @Test
-    public void shouldCompleteJobSuccessfully() {
+    public void shouldCompleteJobSuccessfully() throws InterruptedException{
 
         JobManager jobManager = new DefaultJobManager();
         JobInputDataList jobInputDataList = new JobInputDataList();
-        JobContext jobContext = jobManager.run(jobInputDataList);
+        JobContext jobContext = jobManager.launch(jobInputDataList);
+        jobContext.getDoneSignal().await();
         assertEquals(jobContext.getStatus(), JobState.SUCCESS);
         assertNotNull(jobContext.getStartTime());
         assertNotNull(jobContext.getEndTime());

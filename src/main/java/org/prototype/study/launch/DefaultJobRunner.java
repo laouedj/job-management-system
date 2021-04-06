@@ -10,8 +10,8 @@ import java.util.concurrent.*;
 public class DefaultJobRunner implements JobRunner {
 
     private ExecutorService executorService;
-    private static final int DEFAULT_CORE_POOL_SIZE = 3;
 
+    private static final int DEFAULT_CORE_POOL_SIZE = 3;
 
     public DefaultJobRunner(int corePoolSize) {
         this.executorService = Executors.newFixedThreadPool(corePoolSize);
@@ -23,7 +23,8 @@ public class DefaultJobRunner implements JobRunner {
 
 
     @Override
-    public void submitJob(Job job) {
+    public void execute(Job job) {
+        System.out.println("Start Running job  .....");
         job.getJobExecutionContext().setStartTime(new Date());
 
         CompletableFuture<JobContext> task = CompletableFuture.supplyAsync(job, this.executorService)
@@ -43,6 +44,8 @@ public class DefaultJobRunner implements JobRunner {
                 .thenApply(result ->
                 {
                     result.setEndTime(new Date());
+                    System.out.println("Finish Running job  .....");
+                    result.getDoneSignal().countDown();
                     return result;
                 });
       }

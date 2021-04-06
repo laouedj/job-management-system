@@ -1,6 +1,7 @@
 package org.prototype.study.job;
 
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 public class JobContext {
 
@@ -10,6 +11,7 @@ public class JobContext {
     private JobPriority priority;
     private Date startTime;
     private Date endTime;
+    private final CountDownLatch doneSignal = new CountDownLatch(1);
 
 
     public JobContext(JobInputDataList jobInputDataList) {
@@ -46,5 +48,9 @@ public class JobContext {
 
     public void setPriority(JobPriority priority) {
         this.priority = priority;
+    }
+
+    public CountDownLatch getDoneSignal() {
+        return doneSignal;
     }
 }
