@@ -16,6 +16,8 @@ public class MockFailedJob extends AbstractJob {
 
     @Override
     protected void doExecute() {
+
+        System.out.println("I Am a dummy job " + this.getJobExecutionContext().getJobInputDataList().toString());
         throw new RuntimeException("This is a Fake Failed Job");
     }
 }

@@ -14,7 +14,7 @@ public class DefaultJob extends AbstractJob {
 
     @Override
     protected void doExecute() {
-        System.out.println("I Am a dummy job");
+        System.out.println("I Am a dummy job " + this.getJobExecutionContext().getJobInputDataList().toString());
         try {
             Thread.sleep(100L);
         } catch (InterruptedException e) {

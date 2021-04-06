@@ -1,6 +1,13 @@
 package org.prototype.study.job;
 
+import java.util.List;
+
 public interface JobManager {
 
-    JobContext launch(Job job) ;
+    void launchOne(Job job) ;
+
+    void launchMany(List<Job> jobs) ;
+
+    public void waitToFinish() throws InterruptedException ;
+
 }

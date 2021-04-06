@@ -34,7 +34,6 @@ public abstract class AbstractJob implements Job{
     public JobContext get(){
         execute();
         return getJobExecutionContext();
-
     }
 
     private void validateParameters(JobInputDataList jobInputDataList) {
@@ -42,4 +41,5 @@ public abstract class AbstractJob implements Job{
             throw new RuntimeException("Job can't start with valide parameters");
         }
     }
+
 }

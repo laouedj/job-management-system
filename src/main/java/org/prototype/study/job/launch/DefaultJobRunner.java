@@ -15,6 +15,7 @@ public class DefaultJobRunner implements JobRunner {
     private static final int DEFAULT_CORE_POOL_SIZE = 3;
 
     private StateUpdater stateManager;
+    private CountDownLatch endSignal;
 
     public DefaultJobRunner(int corePoolSize) {
         this.executorService = Executors.newFixedThreadPool(corePoolSize);
@@ -48,10 +49,17 @@ public class DefaultJobRunner implements JobRunner {
                 {
                     result.setEndTime(new Date());
                     this.stateManager.toNextState(job);
+                    this.endSignal.countDown();
                     System.out.println("Finish Running job  .....");
-                    result.getDoneSignal().countDown();
+                    System.out.println("endSignal count  ....." +  this.endSignal.getCount());
                     return result;
                 });
       }
+
+    @Override
+    public void init(CountDownLatch endSignal) {
+        System.out.println("endSignal count at init ....." +  endSignal.getCount());
+        this.endSignal = endSignal;
+    }
 
 }

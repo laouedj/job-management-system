@@ -35,5 +35,11 @@ public class JobInputDataList {
     }
 
 
+    @Override
+    public String toString() {
+        return inputDataList.toString();
+    }
+
+
 
 }

@@ -18,4 +18,12 @@ public class InputData {
     public DataType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "InputData{" +
+                "value=" + value +
+                ", type=" + type +
+                '}';
+    }
 }
