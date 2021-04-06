@@ -25,9 +25,7 @@ public class JobApplicationUnitTest
 
         JobManager jobManager = new DefaultJobManager();
         JobInputDataList jobInputDataList = new JobInputDataList();
-        Job job = jobManager.create(jobInputDataList);
-        job.execute();
-        JobContext jobContext = job.getJobExecutionContext();
+        JobContext jobContext = jobManager.run(jobInputDataList);
         assertEquals(jobContext.getStatus(), JobState.SUCCESS);
         assertNotNull(jobContext.getStartTime());
         assertNotNull(jobContext.getEndTime());

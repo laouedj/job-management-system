@@ -11,29 +11,19 @@ public abstract class AbstractJob implements Job{
         this.jobContext = jobContext;
     }
 
-
-    @Override
-    public final void execute() {
-
-        try {
-            this.jobContext.setStartTime(new Date());
-            doExecute();
-            this.jobContext.setStatus(JobState.SUCCESS);
-
-        }catch(Throwable t) {
-            this.jobContext.setStatus(JobState.FAILED);
-        }
-        finally {
-            this.jobContext.setEndTime(new Date());
-        }
-
-
-    }
-
     @Override
     public JobContext getJobExecutionContext() {
         return this.jobContext;
     }
 
+
     abstract protected void doExecute();
+
+    @Override
+    public JobContext get(){
+
+        doExecute();
+        return this.jobContext;
+
+    }
 }

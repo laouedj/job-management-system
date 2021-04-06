@@ -1,8 +1,9 @@
 package org.prototype.study.job;
 
-public interface Job {
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
-    void execute();
+public interface Job extends Supplier<JobContext> {
 
     JobContext getJobExecutionContext();
 }

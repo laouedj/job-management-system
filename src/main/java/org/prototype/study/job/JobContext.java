@@ -7,6 +7,7 @@ public class JobContext {
     private final JobInputDataList jobInputDataList;
 
     private JobState status;
+    private JobPriority priority;
     private Date startTime;
     private Date endTime;
 
@@ -37,5 +38,13 @@ public class JobContext {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public JobPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(JobPriority priority) {
+        this.priority = priority;
     }
 }
