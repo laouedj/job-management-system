@@ -35,52 +35,58 @@ public class JobApplicationUnitTest
     }
 
     @Test
-    public void shouldCompleteManyJobSuccessfully() throws InterruptedException{
+    public void shouldCompleteJobSuccessfullyWhenLaunchedManyTime() throws InterruptedException{
 
         JobManager jobManager = new DefaultJobManager();
 
-        JobInputDataList jobInputDataListOne = new JobInputDataList();
-        InputData paramOne = new InputData(DataType.STRING, "HELLO");
-        jobInputDataListOne.addInputData("Greating",paramOne);
-        Job jobOne = new DefaultJob(jobInputDataListOne);
+        for(int i=1; i<100; i++){
 
-        JobInputDataList jobInputDataListTwo = new JobInputDataList();
-        InputData paramTwo = new InputData(DataType.STRING, "Cool");
-        jobInputDataListTwo.addInputData("Greating",paramTwo);
-        Job jobTwo = new DefaultJob(jobInputDataListTwo);
+            JobInputDataList jobInputDataList = new JobInputDataList();
+            InputData param = new InputData(DataType.STRING, "HELLO " + i);
+            jobInputDataList.addInputData("Greating",param);
+            Job job = new DefaultJob(jobInputDataList);
+            jobManager.launchOne(job);
 
+            jobManager.waitToFinish();
 
-        JobInputDataList jobInputDataListThree = new JobInputDataList();
-        InputData paramThree = new InputData(DataType.STRING, "Yes !!!");
-        jobInputDataListThree.addInputData("Greating",paramThree);
-        Job jobThree = new DefaultJob(jobInputDataListThree);
+            JobContext jobContext = job.getJobExecutionContext();
+            assertEquals(jobContext.getStatus(), JobState.SUCCESS);
+            assertNotNull(jobContext.getStartTime());
+            assertNotNull(jobContext.getEndTime());
+        }
 
+    }
+
+    @Test
+    public void shouldCompleteManyJobSuccessfully() throws InterruptedException{
+
+        JobManager jobManager = new DefaultJobManager();
         List<Job> jobsToLaunch  = new ArrayList<Job>();
-        jobsToLaunch.add(jobOne);
-        jobsToLaunch.add(jobTwo);
-        jobsToLaunch.add(jobThree);
 
+
+        for(int i=1; i<100; i++){
+
+            JobInputDataList jobInputDataList = new JobInputDataList();
+            InputData param = new InputData(DataType.STRING, "HELLO " + i);
+            jobInputDataList.addInputData("Greating",param);
+            Job job = new DefaultJob(jobInputDataList);
+            jobsToLaunch.add(job);
+
+        }
 
 
         jobManager.launchMany(jobsToLaunch);
 
         jobManager.waitToFinish();
 
-        JobContext jobContextOne = jobOne.getJobExecutionContext();
-        assertEquals(jobContextOne.getStatus(), JobState.SUCCESS);
-        assertNotNull(jobContextOne.getStartTime());
-        assertNotNull(jobContextOne.getEndTime());
+        for (Job job :jobsToLaunch)
+        {
+            JobContext jobContext = job.getJobExecutionContext();
+            assertEquals(jobContext.getStatus(), JobState.SUCCESS);
+            assertNotNull(jobContext.getStartTime());
+            assertNotNull(jobContext.getEndTime());
+        }
 
-        JobContext jobContextTwo = jobTwo.getJobExecutionContext();
-        assertEquals(jobContextTwo.getStatus(), JobState.SUCCESS);
-        assertNotNull(jobContextTwo.getStartTime());
-        assertNotNull(jobContextTwo.getEndTime());
-
-
-        JobContext jobContextThree = jobThree.getJobExecutionContext();
-        assertEquals(jobContextThree.getStatus(), JobState.SUCCESS);
-        assertNotNull(jobContextThree.getStartTime());
-        assertNotNull(jobContextThree.getEndTime());
     }
 
     @Test
