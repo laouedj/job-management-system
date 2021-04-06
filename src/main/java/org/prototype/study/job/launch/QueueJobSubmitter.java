@@ -1,6 +1,7 @@
-package org.prototype.study.launch;
+package org.prototype.study.job.launch;
 
 import org.prototype.study.job.Job;
+import org.prototype.study.job.state.JobState;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -43,8 +44,9 @@ public class QueueJobSubmitter implements JobSubmitter {
     @Override
     public void submit(Job job) {
         try {
+            System.out.println(" Submitting Job .....");
+            job.getJobExecutionContext().setStatus(JobState.QUEUED);
             jobQueue.put(job);
-            System.out.println("Job put .....");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

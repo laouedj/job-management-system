@@ -15,6 +15,10 @@ public class JobInputDataList {
         this.inputDataList = new LinkedHashMap<String, InputData>(inputDataList);
     }
 
+    public void addInputData(String key, InputData param) {
+        this.inputDataList.put(key, param);
+    }
+
     public Object getInputData(String key) {
         if (!inputDataList.containsKey(key)){
             return  null;
@@ -27,7 +31,7 @@ public class JobInputDataList {
     }
 
     public boolean isEmpty(){
-        return inputDataList.isEmpty();
+        return (inputDataList == null || inputDataList.isEmpty());
     }
 
 

@@ -1,5 +1,7 @@
 package org.prototype.study.job;
 
+import org.prototype.study.job.state.JobState;
+
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 
@@ -12,6 +14,7 @@ public class JobContext {
     private Date startTime;
     private Date endTime;
     private final CountDownLatch doneSignal = new CountDownLatch(1);
+    private Throwable error;
 
 
     public JobContext(JobInputDataList jobInputDataList) {
@@ -52,5 +55,17 @@ public class JobContext {
 
     public CountDownLatch getDoneSignal() {
         return doneSignal;
+    }
+
+    public Throwable getError() {
+        return error;
+    }
+
+    public void setError(Throwable error) {
+        this.error = error;
+    }
+
+    public JobInputDataList getJobInputDataList() {
+        return jobInputDataList;
     }
 }

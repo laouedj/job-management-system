@@ -1,6 +1,6 @@
 package org.prototype.study.job;
 
-import java.util.Date;
+import org.prototype.study.job.state.JobState;
 
 public abstract class AbstractJob implements Job{
 
@@ -11,6 +11,11 @@ public abstract class AbstractJob implements Job{
         this.jobContext = jobContext;
     }
 
+    public AbstractJob(JobInputDataList jobInputDataList) {
+        this(new JobContext(jobInputDataList));
+    }
+
+
     @Override
     public JobContext getJobExecutionContext() {
         return this.jobContext;
@@ -20,10 +25,21 @@ public abstract class AbstractJob implements Job{
     abstract protected void doExecute();
 
     @Override
-    public JobContext get(){
-
+    public void execute(){
+        validateParameters(this.jobContext.getJobInputDataList());
         doExecute();
-        return this.jobContext;
+    }
 
+    @Override
+    public JobContext get(){
+        execute();
+        return getJobExecutionContext();
+
+    }
+
+    private void validateParameters(JobInputDataList jobInputDataList) {
+        if (jobInputDataList == null || jobInputDataList.isEmpty()) {
+            throw new RuntimeException("Job can't start with valide parameters");
+        }
     }
 }

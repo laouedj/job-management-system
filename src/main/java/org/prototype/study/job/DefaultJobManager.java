@@ -1,9 +1,7 @@
 package org.prototype.study.job;
 
-import org.prototype.study.launch.DefaultJobRunner;
-import org.prototype.study.launch.JobRunner;
-import org.prototype.study.launch.JobSubmitter;
-import org.prototype.study.launch.QueueJobSubmitter;
+import org.prototype.study.job.launch.JobSubmitter;
+import org.prototype.study.job.launch.QueueJobSubmitter;
 
 import java.util.concurrent.*;
 
@@ -24,17 +22,8 @@ public class DefaultJobManager implements JobManager{
         executorService.execute(this.jobSubmitter);
     }
 
-
-    private Job create(JobInputDataList jobInputDataList) {
-
-        JobContext jobContext = new JobContext(jobInputDataList);
-        Job job = new DefaultJob(jobContext);
-        return job;
-    }
-
     @Override
-    public JobContext launch(JobInputDataList jobInputDataList) {
-        Job job = create(jobInputDataList);
+    public JobContext launch(Job job) {
         this.jobSubmitter.submit(job);
         return  job.getJobExecutionContext();
     }
