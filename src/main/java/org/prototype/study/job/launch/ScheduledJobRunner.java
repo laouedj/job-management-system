@@ -1,45 +1,34 @@
 package org.prototype.study.job.launch;
 
 import org.prototype.study.job.Job;
+import org.prototype.study.job.JobContext;
 import org.prototype.study.job.state.StateManager;
 import org.prototype.study.job.state.StateUpdater;
 
+import java.util.Date;
 import java.util.concurrent.*;
 
-public class ScheduledJobRunner implements  JobRunner{
+public class ScheduledJobRunner extends  AbstractJobRunner{
 
-    private static final int DEFAULT_CORE_POOL_SIZE = 3;
 
-    private ExecutorService executorService;
-    private StateUpdater stateManager;
-    private boolean started = false;
-
-    public ScheduledJobRunner(StateUpdater stateManager, ExecutorService executorService) {
-        this.executorService = executorService;
-        this.stateManager = stateManager;
+  public ScheduledJobRunner(StateUpdater stateManager) {
+        super(stateManager);
     }
 
     public ScheduledJobRunner() {
-        this(new StateManager(), Executors.newScheduledThreadPool(DEFAULT_CORE_POOL_SIZE));
-    }
-
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void execute(Job job) {
-
-        //Executor afterTenSecs = CompletableFuture.delayedExecutor(10L, TimeUnit.SECONDS);
-        //CompletableFuture<String> future
-        //        = CompletableFuture.supplyAsync(() -> "someValue", afterTenSecs);
-
-
+        super(new StateManager());
     }
 
     @Override
     public void shutdown() {
+      System.out.println("Shutdown ScheduledJobRunner ....");
+      this.started = false;
+    }
 
+    @Override
+    protected Executor getExecutor(Job job) {
+
+        Executor scheduledExecutor = CompletableFuture.delayedExecutor(10L, TimeUnit.SECONDS);
+        return scheduledExecutor;
     }
 }

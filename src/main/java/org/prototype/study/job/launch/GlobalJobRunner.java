@@ -20,14 +20,15 @@ public class GlobalJobRunner implements JobRunner {
 
     @Override
     public void start() {
-
+        compositeJobRunner.get(ExecutionMode.SCHEDULED).start();
+        compositeJobRunner.get(ExecutionMode.IMMEDIATE).start();
     }
 
     @Override
     public void execute(Job job) {
 
         JobInputDataList inputDataList = job.getJobExecutionContext().getJobInputDataList();
-        if (inputDataList.getInputData("schedul.date") != null) {
+        if (inputDataList.getInputData("schedule.date") != null) {
             compositeJobRunner.get(ExecutionMode.SCHEDULED).execute(job);
         }else {
             compositeJobRunner.get(ExecutionMode.IMMEDIATE).execute(job);
@@ -37,6 +38,9 @@ public class GlobalJobRunner implements JobRunner {
 
     @Override
     public void shutdown() {
+
+        compositeJobRunner.get(ExecutionMode.SCHEDULED).shutdown();
+        compositeJobRunner.get(ExecutionMode.IMMEDIATE).shutdown();
 
     }
 }

@@ -55,6 +55,7 @@ public class DefaultJobManager implements JobManager{
 
     private void shutdownExecutorService(ExecutorService executorService) {
         executorService.shutdown();
+
         try {
             if (!executorService.awaitTermination(900, TimeUnit.MILLISECONDS)) {
                 executorService.shutdownNow();

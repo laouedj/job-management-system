@@ -6,6 +6,7 @@ import org.prototype.study.job.*;
 import org.prototype.study.job.state.JobState;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,29 @@ public class JobApplicationUnitTest {
         JobInputDataList jobInputDataList = new JobInputDataList();
         InputData param = new InputData(DataType.STRING, "HELLO");
         jobInputDataList.addInputData("Greating", param);
+        Job job = new DefaultJob(jobInputDataList);
+
+        jobManager.launchOne(job);
+
+
+        JobContext jobContext = job.getJobExecutionContext();
+        jobContext.getDone().await();
+        assertEquals(jobContext.getStatus(), JobState.SUCCESS);
+        assertNotNull(jobContext.getStartTime());
+        assertNotNull(jobContext.getEndTime());
+
+        jobManager.shutdown();
+    }
+
+    @Test
+    public void shouldCompleteScheduledJobSuccessfully() throws InterruptedException {
+
+        JobManager jobManager = new DefaultJobManager();
+        jobManager.start();
+
+        JobInputDataList jobInputDataList = new JobInputDataList();
+        InputData param = new InputData(DataType.DATE, new Date());
+        jobInputDataList.addInputData("schedule.date", param);
         Job job = new DefaultJob(jobInputDataList);
 
         jobManager.launchOne(job);
