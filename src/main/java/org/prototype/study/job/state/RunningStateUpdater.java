@@ -15,8 +15,10 @@ public class RunningStateUpdater extends AbstractStateUpdater {
     void doUpdateState(Job job) {
 
         if (job.getJobExecutionContext().getError() != null) {
+            System.out.println("Job passe from RUNNING to FAILED.....");
             job.getJobExecutionContext().setStatus(JobState.FAILED);
         } else {
+            System.out.println("Job passe from RUNNING to SUCCESS.....");
             job.getJobExecutionContext().setStatus(JobState.SUCCESS);
         }
     }

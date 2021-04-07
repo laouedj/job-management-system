@@ -13,6 +13,7 @@ public class QueuedStateUpdater extends AbstractStateUpdater {
 
     @Override
     void doUpdateState(Job job) {
+        System.out.println("Job passe from QUEUED to RUNNING.....");
         job.getJobExecutionContext().setStatus(JobState.RUNNING);
     }
 }

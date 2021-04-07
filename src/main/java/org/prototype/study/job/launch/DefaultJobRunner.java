@@ -10,20 +10,18 @@ import java.util.concurrent.*;
 
 public class DefaultJobRunner implements JobRunner {
 
-    private ExecutorService executorService;
-
     private static final int DEFAULT_CORE_POOL_SIZE = 3;
 
+    private ExecutorService executorService;
     private StateUpdater stateManager;
-    private CountDownLatch endSignal;
 
-    public DefaultJobRunner(int corePoolSize) {
-        this.executorService = Executors.newFixedThreadPool(corePoolSize);
-        this.stateManager = new StateManager();
+    public DefaultJobRunner(StateUpdater stateManager,ExecutorService executorService) {
+        this.executorService = executorService;
+        this.stateManager = stateManager;
     }
 
     public DefaultJobRunner() {
-        this(DEFAULT_CORE_POOL_SIZE);
+        this(new StateManager(),Executors.newFixedThreadPool(DEFAULT_CORE_POOL_SIZE));
     }
 
 
@@ -37,6 +35,8 @@ public class DefaultJobRunner implements JobRunner {
                     if (exception != null) {
                         System.out.println("exception occurs" + exception);
                         result.setError(exception);
+                    } else {
+                        System.out.println("No exception occurs");
                     }
                 })
                 .exceptionally(throwable ->
@@ -49,17 +49,10 @@ public class DefaultJobRunner implements JobRunner {
                 {
                     result.setEndTime(new Date());
                     this.stateManager.toNextState(job);
-                    this.endSignal.countDown();
+                    result.getDone().countDown();
                     System.out.println("Finish Running job  .....");
-                    System.out.println("endSignal count  ....." +  this.endSignal.getCount());
                     return result;
                 });
       }
-
-    @Override
-    public void init(CountDownLatch endSignal) {
-        System.out.println("endSignal count at init ....." +  endSignal.getCount());
-        this.endSignal = endSignal;
-    }
 
 }

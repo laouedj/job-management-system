@@ -8,6 +8,4 @@ public interface JobManager {
 
     void launchMany(List<Job> jobs) ;
 
-    public void waitToFinish() throws InterruptedException ;
-
 }

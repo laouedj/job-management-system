@@ -4,10 +4,8 @@ import org.prototype.study.job.Job;
 
 import java.util.concurrent.CountDownLatch;
 
-public interface JobRunner {
+public interface JobRunner  {
 
     void execute(Job job);
-
-    void init(CountDownLatch endSignal);
 
 }

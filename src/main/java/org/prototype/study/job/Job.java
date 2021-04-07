@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 public interface Job extends Supplier<JobContext> {
 
     void execute();
+
     JobContext getJobExecutionContext();
 
 }

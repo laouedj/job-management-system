@@ -13,7 +13,7 @@ public class JobContext {
     private JobPriority priority;
     private Date startTime;
     private Date endTime;
-    private CountDownLatch doneSignal;
+    private CountDownLatch done = new CountDownLatch(1);
     private Throwable error;
 
 
@@ -53,8 +53,8 @@ public class JobContext {
         this.priority = priority;
     }
 
-    public CountDownLatch getDoneSignal() {
-        return doneSignal;
+    public CountDownLatch getDone() {
+        return done;
     }
 
     public Throwable getError() {
@@ -69,7 +69,7 @@ public class JobContext {
         return jobInputDataList;
     }
 
-    public void setDoneSignal(CountDownLatch doneSignal) {
-        this.doneSignal = doneSignal;
+    public void setDone(CountDownLatch done) {
+        this.done = done;
     }
 }
