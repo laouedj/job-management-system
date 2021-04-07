@@ -13,12 +13,14 @@ public class JobContext {
     private JobPriority priority;
     private Date startTime;
     private Date endTime;
-    private CountDownLatch done = new CountDownLatch(1);
+    private CountDownLatch done;
     private Throwable error;
 
 
     public JobContext(JobInputDataList jobInputDataList) {
+
         this.jobInputDataList = jobInputDataList;
+        done = new CountDownLatch(1);
     }
 
     public JobState getStatus() {

@@ -14,6 +14,7 @@ public class DefaultJobRunner implements JobRunner {
 
     private ExecutorService executorService;
     private StateUpdater stateManager;
+    private boolean started = false;
 
     public DefaultJobRunner(StateUpdater stateManager,ExecutorService executorService) {
         this.executorService = executorService;
@@ -26,7 +27,17 @@ public class DefaultJobRunner implements JobRunner {
 
 
     @Override
+    public void start() {
+        started = true;
+    }
+
+    @Override
     public void execute(Job job) {
+
+        if (!started) {
+            System.out.println("Job Runner not started .....");
+            throw new RuntimeException("Job Runner not started .....");
+        }
         System.out.println("Start Running job  .....");
         job.getJobExecutionContext().setStartTime(new Date());
         this.stateManager.toNextState(job);
@@ -54,5 +65,11 @@ public class DefaultJobRunner implements JobRunner {
                     return result;
                 });
       }
+
+    @Override
+    public void shutdown() {
+        this.executorService.shutdown();
+        this.started = false;
+    }
 
 }

@@ -19,6 +19,8 @@ public class JobApplicationUnitTest {
     public void shouldCompleteJobSuccessfully() throws InterruptedException {
 
         JobManager jobManager = new DefaultJobManager();
+        jobManager.start();
+
         JobInputDataList jobInputDataList = new JobInputDataList();
         InputData param = new InputData(DataType.STRING, "HELLO");
         jobInputDataList.addInputData("Greating", param);
@@ -26,11 +28,14 @@ public class JobApplicationUnitTest {
 
         jobManager.launchOne(job);
 
+
         JobContext jobContext = job.getJobExecutionContext();
         jobContext.getDone().await();
         assertEquals(jobContext.getStatus(), JobState.SUCCESS);
         assertNotNull(jobContext.getStartTime());
         assertNotNull(jobContext.getEndTime());
+
+        jobManager.shutdown();
     }
 
     @Test
@@ -39,8 +44,9 @@ public class JobApplicationUnitTest {
 
         List<Job> jobsToLaunch = new ArrayList<Job>();
         JobManager jobManager = new DefaultJobManager();
+        jobManager.start();
 
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 50; i++) {
 
             JobInputDataList jobInputDataList = new JobInputDataList();
             InputData param = new InputData(DataType.STRING, "HELLO " + i);
@@ -67,6 +73,8 @@ public class JobApplicationUnitTest {
 
         }
 
+        jobManager.shutdown();
+
 
     }
 
@@ -74,6 +82,8 @@ public class JobApplicationUnitTest {
     public void shouldCompleteManyJobSuccessfully() throws InterruptedException {
 
         JobManager jobManager = new DefaultJobManager();
+        jobManager.start();
+
         List<Job> jobsToLaunch = new ArrayList<Job>();
 
 
@@ -100,12 +110,16 @@ public class JobApplicationUnitTest {
             assertNotNull(jobContext.getEndTime());
         }
 
+        jobManager.shutdown();
+
     }
 
     @Test
     public void shouldFailedWhenException() throws InterruptedException {
 
         JobManager jobManager = new DefaultJobManager();
+        jobManager.start();
+
         JobInputDataList jobInputDataList = new JobInputDataList();
         InputData param = new InputData(DataType.STRING, "HELLO");
         jobInputDataList.addInputData("Greating", param);
@@ -121,12 +135,16 @@ public class JobApplicationUnitTest {
         assertNotNull(jobContext.getEndTime());
         assertNotNull(jobContext.getError());
 
+        jobManager.shutdown();
+
     }
 
     @Test
     public void shouldFailedWithoutParameters() throws InterruptedException {
 
         JobManager jobManager = new DefaultJobManager();
+        jobManager.start();
+
         JobInputDataList jobInputDataList = new JobInputDataList();
         Job job = new DefaultJob(jobInputDataList);
 
@@ -141,6 +159,9 @@ public class JobApplicationUnitTest {
         assertNotNull(jobContext.getEndTime());
         assertNotNull(jobContext.getError());
 
+        jobManager.shutdown();
+
+
     }
 
 
@@ -148,6 +169,7 @@ public class JobApplicationUnitTest {
     public void shouldCompleteManyJobWithoutSideEffect() throws InterruptedException {
 
         JobManager jobManager = new DefaultJobManager();
+        jobManager.start();
 
         JobInputDataList jobInputDataListOne = new JobInputDataList();
         InputData paramOne = new InputData(DataType.STRING, "HELLO");
@@ -193,6 +215,8 @@ public class JobApplicationUnitTest {
         assertEquals(jobContextThree.getStatus(), JobState.SUCCESS);
         assertNotNull(jobContextThree.getStartTime());
         assertNotNull(jobContextThree.getEndTime());
+
+        jobManager.shutdown();
     }
 
 }

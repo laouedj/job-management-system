@@ -8,4 +8,8 @@ public interface JobManager {
 
     void launchMany(List<Job> jobs) ;
 
+    void shutdown();
+
+    void start();
+
 }

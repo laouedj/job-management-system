@@ -9,11 +9,17 @@ public class DefaultJobConsumer implements JobConsumer {
     private JobQueue jobQueue;
     private JobRunner jobRunner;
 
-    private CountDownLatch end = new CountDownLatch(1);
+    private CountDownLatch end;
 
     public DefaultJobConsumer(JobQueue jobQueue) {
         this.jobQueue = jobQueue;
         jobRunner = new DefaultJobRunner();
+    }
+
+    @Override
+    public void start() {
+        this.jobRunner.start();
+        end = new CountDownLatch(1);
     }
 
     @Override
@@ -24,6 +30,12 @@ public class DefaultJobConsumer implements JobConsumer {
         } else {
             System.out.println("Not Job available yet ! .....");
         }
+    }
+
+    @Override
+    public void shutdown() {
+        this.jobRunner.shutdown();
+        end.countDown();
     }
 
     @Override
@@ -40,7 +52,9 @@ public class DefaultJobConsumer implements JobConsumer {
     }
 
     private boolean canRun() {
-        return (this.end.getCount() != 0);
+        return (this.end != null) && (this.end.getCount() != 0);
     }
+
+
 
 }

@@ -12,6 +12,7 @@ public class DefaultJobManager implements JobManager{
     private JobProducer jobProducer;
     private JobConsumer jobConsumer;
     private  JobQueue jobQueue;
+    private boolean started = false;
 
 
     public DefaultJobManager() {
@@ -19,22 +20,44 @@ public class DefaultJobManager implements JobManager{
         this.jobQueue = new JobSimpleQueue();
         this.jobProducer = new DefaultJobProducer(this.jobQueue);
         this.jobConsumer = new DefaultJobConsumer(this.jobQueue);
-        executorService.execute(this.jobConsumer);
     }
 
 
     @Override
     public void launchOne(Job job) {
+        if (!started) {
+            System.out.println("Job Manager not started .....");
+            throw new RuntimeException("Job Manager not started .....");
+        }
         this.jobProducer.produceOne(job);
     }
 
     @Override
     public void launchMany(List<Job> jobs) {
+
+        if (!started) {
+            System.out.println("Job Manager not started .....");
+            throw new RuntimeException("Job Manager not started .....");
+        }
+
         if (jobs == null || jobs.isEmpty()) {
             return;
         }
         this.jobProducer.produceMany(jobs);
     }
 
+    @Override
+    public void shutdown() {
+        this.executorService.shutdown();
+        this.jobConsumer.shutdown();
+        this.started = false;
+    }
+
+    @Override
+    public void start() {
+        this.jobConsumer.start();
+        executorService.execute(this.jobConsumer);
+        this.started = true;
+    }
 
 }
