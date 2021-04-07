@@ -13,7 +13,7 @@ public class DefaultJobConsumer implements JobConsumer {
 
     public DefaultJobConsumer(JobQueue jobQueue) {
         this.jobQueue = jobQueue;
-        jobRunner = new DefaultJobRunner();
+        jobRunner = new GlobalJobRunner();
     }
 
     @Override

@@ -48,9 +48,20 @@ public class DefaultJobManager implements JobManager{
 
     @Override
     public void shutdown() {
-        this.executorService.shutdown();
+        shutdownExecutorService(this.executorService);
         this.jobConsumer.shutdown();
         this.started = false;
+    }
+
+    private void shutdownExecutorService(ExecutorService executorService) {
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(900, TimeUnit.MILLISECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
     }
 
     @Override

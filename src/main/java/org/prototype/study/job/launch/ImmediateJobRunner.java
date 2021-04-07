@@ -8,7 +8,7 @@ import org.prototype.study.job.state.StateUpdater;
 import java.util.Date;
 import java.util.concurrent.*;
 
-public class DefaultJobRunner implements JobRunner {
+public class ImmediateJobRunner implements JobRunner {
 
     private static final int DEFAULT_CORE_POOL_SIZE = 3;
 
@@ -16,12 +16,12 @@ public class DefaultJobRunner implements JobRunner {
     private StateUpdater stateManager;
     private boolean started = false;
 
-    public DefaultJobRunner(StateUpdater stateManager,ExecutorService executorService) {
+    public ImmediateJobRunner(StateUpdater stateManager, ExecutorService executorService) {
         this.executorService = executorService;
         this.stateManager = stateManager;
     }
 
-    public DefaultJobRunner() {
+    public ImmediateJobRunner() {
         this(new StateManager(),Executors.newFixedThreadPool(DEFAULT_CORE_POOL_SIZE));
     }
 
@@ -69,6 +69,13 @@ public class DefaultJobRunner implements JobRunner {
     @Override
     public void shutdown() {
         this.executorService.shutdown();
+        try {
+            if (!this.executorService.awaitTermination(900, TimeUnit.MILLISECONDS)) {
+                this.executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            this.executorService.shutdownNow();
+        }
         this.started = false;
     }
 
