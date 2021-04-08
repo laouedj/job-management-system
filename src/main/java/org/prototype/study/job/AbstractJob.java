@@ -36,9 +36,7 @@ public abstract class AbstractJob implements Job{
     }
 
     private void validateParameters(JobInputDataList jobInputDataList) {
-        if (jobInputDataList == null || jobInputDataList.isEmpty()) {
-            throw new RuntimeException("Job can't start with valide parameters");
-        }
+        //TODO  some stuff to validate parameters
     }
 
 }
