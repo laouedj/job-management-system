@@ -10,42 +10,13 @@ import java.util.concurrent.*;
 
 public class ImmediateJobRunner extends AbstractJobRunner {
 
-    private static final int DEFAULT_CORE_POOL_SIZE = 3;
 
-    private ExecutorService executorService;
-
-
-    public ImmediateJobRunner( StateUpdater stateManager, ExecutorService executorService) {
-        super(stateManager);
-        this.executorService = executorService;
-
-    }
-
-
-    public ImmediateJobRunner() {
-        this(new StateManager(),Executors.newFixedThreadPool(DEFAULT_CORE_POOL_SIZE));
-    }
 
 
 
     @Override
-    public void shutdown() {
-        System.out.println("Shutdown ImmediateRunner ....");
-        this.executorService.shutdown();
-        try {
-            if (!this.executorService.awaitTermination(900, TimeUnit.MILLISECONDS)) {
-                this.executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            this.executorService.shutdownNow();
-        }
-        this.started = false;
-
-    }
-
-    @Override
-    protected Executor getExecutor(Job job) {
-        if (this.executorService.isShutdown()) {
+    protected Executor getExecutor(Job job, ExecutorService executorService) {
+        if (executorService.isShutdown()) {
             System.out.println("The executor is shutdown ....");
             throw new RuntimeException("The executor is shutdown ....");
         }

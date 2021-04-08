@@ -11,24 +11,10 @@ import java.util.concurrent.*;
 public class ScheduledJobRunner extends  AbstractJobRunner{
 
 
-  public ScheduledJobRunner(StateUpdater stateManager) {
-        super(stateManager);
-    }
-
-    public ScheduledJobRunner() {
-        super(new StateManager());
-    }
-
     @Override
-    public void shutdown() {
-      System.out.println("Shutdown ScheduledJobRunner ....");
-      this.started = false;
-    }
+    protected Executor getExecutor(Job job, ExecutorService executorService) {
 
-    @Override
-    protected Executor getExecutor(Job job) {
-
-        Executor scheduledExecutor = CompletableFuture.delayedExecutor(10L, TimeUnit.SECONDS);
+        Executor scheduledExecutor = CompletableFuture.delayedExecutor(10L, TimeUnit.SECONDS, executorService);
         return scheduledExecutor;
     }
 }
