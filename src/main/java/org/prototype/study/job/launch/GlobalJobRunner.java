@@ -29,6 +29,7 @@ public class GlobalJobRunner implements JobRunner {
 
         JobInputDataList inputDataList = job.getJobExecutionContext().getJobInputDataList();
         if (inputDataList.getInputData("schedule.date") != null) {
+            System.out.println("Job is scheduled on " + inputDataList.getInputData("schedule.date"));
             compositeJobRunner.get(ExecutionMode.SCHEDULED).execute(job);
         }else {
             compositeJobRunner.get(ExecutionMode.IMMEDIATE).execute(job);

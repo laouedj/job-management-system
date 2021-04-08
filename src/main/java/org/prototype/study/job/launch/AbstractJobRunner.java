@@ -5,6 +5,7 @@ import org.prototype.study.job.JobContext;
 import org.prototype.study.job.state.StateManager;
 import org.prototype.study.job.state.StateUpdater;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.*;
 
@@ -61,32 +62,27 @@ public abstract class AbstractJobRunner implements JobRunner {
 
 
     protected void doExecute(Job job, Executor executorService) {
-        System.out.println("Start Running job  .....");
-        job.getJobExecutionContext().setStartTime(new Date());
-        this.stateManager.toNextState(job);
-        CompletableFuture<JobContext> task = CompletableFuture.supplyAsync(job, executorService)
-                .whenCompleteAsync((result, exception) -> {
-                    if (exception != null) {
-                        System.out.println("exception occurs" + exception);
-                        result.setError(exception);
-                    } else {
-                        System.out.println("No exception occurs");
-                    }
-                })
+
+        CompletableFuture<Void> task = CompletableFuture
+                .runAsync(() -> {
+                    System.out.println("Start Running job  .....");
+                    job.getJobExecutionContext().setStartTime(LocalDateTime.now());
+                    this.stateManager.toNextState(job);
+                },executorService)
+                .thenRun(job)
                 .exceptionally(throwable ->
                 {
                     job.getJobExecutionContext().setError(throwable);
                     System.out.println("exception occurs" + throwable);
-                    return job.getJobExecutionContext();
+                    return null;
                 })
-                .thenApplyAsync(result ->
-                {
-                    result.setEndTime(new Date());
+                .thenRun(() -> {
+                    job.getJobExecutionContext().setEndTime(LocalDateTime.now());
                     this.stateManager.toNextState(job);
-                    result.getDone().countDown();
+                    job.getJobExecutionContext().getDone().countDown();
                     System.out.println("Finish Running job  .....");
-                    return result;
-                });
+                })
+                ;
     }
 
 

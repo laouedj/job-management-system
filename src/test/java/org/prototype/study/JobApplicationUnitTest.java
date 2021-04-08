@@ -46,7 +46,8 @@ public class JobApplicationUnitTest {
         jobManager.start();
 
         JobInputDataList jobInputDataList = new JobInputDataList();
-        InputData param = new InputData(DataType.DATE, new Date());
+        String scheduledDate = "2021-04-08T16:02:00";
+        InputData param = new InputData(DataType.DATE, scheduledDate);
         jobInputDataList.addInputData("schedule.date", param);
         Job job = new DefaultJob(jobInputDataList);
 
@@ -75,6 +76,23 @@ public class JobApplicationUnitTest {
             JobInputDataList jobInputDataList = new JobInputDataList();
             InputData param = new InputData(DataType.STRING, "HELLO " + i);
             jobInputDataList.addInputData("Greating", param);
+            if (i == 25) {
+                String scheduledDate = "2021-04-08T16:02:25";
+                 param = new InputData(DataType.DATE, scheduledDate);
+                jobInputDataList.addInputData("schedule.date", param);
+            }
+
+            if (i == 30) {
+                String scheduledDate = "2021-04-08T16:02:30";
+                 param = new InputData(DataType.DATE, scheduledDate);
+                jobInputDataList.addInputData("schedule.date", param);
+            }
+
+            if (i == 35) {
+                String scheduledDate = "2021-04-08T16:02:35";
+                 param = new InputData(DataType.DATE, scheduledDate);
+                jobInputDataList.addInputData("schedule.date", param);
+            }
             Job job = new DefaultJob(jobInputDataList);
             jobsToLaunch.add(job);
         }
@@ -116,6 +134,23 @@ public class JobApplicationUnitTest {
             JobInputDataList jobInputDataList = new JobInputDataList();
             InputData param = new InputData(DataType.STRING, "HELLO " + i);
             jobInputDataList.addInputData("Greating", param);
+            if (i == 25) {
+                String scheduledDate = "2021-04-08T16:02:40";
+                param = new InputData(DataType.DATE, scheduledDate);
+                jobInputDataList.addInputData("schedule.date", param);
+            }
+
+            if (i == 30) {
+                String scheduledDate = "2021-04-08T16:02:45";
+                param = new InputData(DataType.DATE, scheduledDate);
+                jobInputDataList.addInputData("schedule.date", param);
+            }
+
+            if (i == 35) {
+                String scheduledDate = "2021-04-08T16:02:50";
+                param = new InputData(DataType.DATE, scheduledDate);
+                jobInputDataList.addInputData("schedule.date", param);
+            }
             Job job = new DefaultJob(jobInputDataList);
             jobsToLaunch.add(job);
 

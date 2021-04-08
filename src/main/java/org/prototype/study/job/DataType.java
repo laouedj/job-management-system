@@ -1,5 +1,6 @@
 package org.prototype.study.job;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public enum DataType implements AbstractDataType{
@@ -9,8 +10,8 @@ public enum DataType implements AbstractDataType{
     STRING,
     DATE {
         @Override
-        public Date getValue(Object input) {
-            return new Date(((Date) input).getTime());
+        public LocalDateTime getValue(Object input) {
+            return LocalDateTime.parse((String)input);
         }
     };
 

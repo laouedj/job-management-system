@@ -31,9 +31,8 @@ public abstract class AbstractJob implements Job{
     }
 
     @Override
-    public JobContext get(){
+    public void run() {
         execute();
-        return getJobExecutionContext();
     }
 
     private void validateParameters(JobInputDataList jobInputDataList) {
