@@ -2,7 +2,7 @@ package org.prototype.study;
 
 import org.prototype.study.job.AbstractJob;
 import org.prototype.study.job.JobContext;
-import org.prototype.study.job.JobInputDataList;
+import org.prototype.study.job.parameters.JobInputDataList;
 
 public class MockFailedJob extends AbstractJob {
 

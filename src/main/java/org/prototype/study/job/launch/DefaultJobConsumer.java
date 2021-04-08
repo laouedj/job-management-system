@@ -25,7 +25,7 @@ public class DefaultJobConsumer implements JobConsumer {
     @Override
     public void consume(Job job) {
         if (job != null) {
-            System.out.println("Job taken .....");
+            System.out.println("Job taken ....." + job.getJobExecutionContext().getJobInputDataList());
             jobRunner.execute(job);
         } else {
             System.out.println("Not Job available yet ! .....");

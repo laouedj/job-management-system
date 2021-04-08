@@ -1,12 +1,14 @@
 package org.prototype.study;
 
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
+import org.prototype.study.job.parameters.DataType;
+import org.prototype.study.job.parameters.JobInputDataList;
+import org.prototype.study.job.state.InputData;
 import org.prototype.study.job.state.JobState;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,12 +18,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public class FailedJobUnitTest {
 
+    private JobManager jobManager;
+
+    @BeforeEach
+    public void setUp() {
+        this.jobManager = new DefaultJobManager();
+        this.jobManager.start();
+   }
+
 
     @Test
     public void jobShouldFailedWhenException() throws InterruptedException {
 
-        JobManager jobManager = new DefaultJobManager();
-        jobManager.start();
 
         JobInputDataList jobInputDataList = new JobInputDataList();
         InputData param = new InputData(DataType.STRING, "HELLO");
@@ -38,8 +46,14 @@ public class FailedJobUnitTest {
         assertNotNull(jobContext.getEndTime());
         assertNotNull(jobContext.getError());
 
-        jobManager.shutdown();
 
+
+    }
+
+
+    @AfterEach
+    void tearDown() {
+        jobManager.shutdown();
     }
 
 

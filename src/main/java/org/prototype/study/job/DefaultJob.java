@@ -1,6 +1,6 @@
 package org.prototype.study.job;
 
-import java.util.Date;
+import org.prototype.study.job.parameters.JobInputDataList;
 
 public class DefaultJob extends AbstractJob {
 

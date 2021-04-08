@@ -1,4 +1,6 @@
-package org.prototype.study.job;
+package org.prototype.study.job.state;
+
+import org.prototype.study.job.parameters.DataType;
 
 public class InputData {
 

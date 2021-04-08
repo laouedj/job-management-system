@@ -11,7 +11,7 @@ import java.util.concurrent.*;
 
 public abstract class AbstractJobRunner implements JobRunner {
 
-    private static final int DEFAULT_CORE_POOL_SIZE = 3;
+    private static final int DEFAULT_CORE_POOL_SIZE = 1;
 
 
     protected StateUpdater stateManager;

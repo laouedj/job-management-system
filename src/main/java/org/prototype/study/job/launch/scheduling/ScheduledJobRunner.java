@@ -1,12 +1,13 @@
-package org.prototype.study.job.launch;
+package org.prototype.study.job.launch.scheduling;
 
 import org.prototype.study.job.Job;
+import org.prototype.study.job.launch.AbstractJobRunner;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.*;
 
-public class ScheduledJobRunner extends  AbstractJobRunner{
+public class ScheduledJobRunner extends AbstractJobRunner {
 
 
     @Override

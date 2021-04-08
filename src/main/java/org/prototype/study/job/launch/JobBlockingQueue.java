@@ -7,18 +7,17 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class JobSimpleQueue implements JobQueue {
+public class JobBlockingQueue implements JobQueue {
 
     private final BlockingQueue<Job> jobQueue;
 
-    public JobSimpleQueue(BlockingQueue<Job> jobQueue) {
+    public JobBlockingQueue(BlockingQueue<Job> jobQueue) {
         this.jobQueue = jobQueue;
     }
 
-    public JobSimpleQueue() {
-        this.jobQueue = new LinkedBlockingQueue();
+    public JobBlockingQueue() {
+        this.jobQueue = new LinkedBlockingQueue<Job>();
     }
-
 
     @Override
     public void put(Job job) throws InterruptedException  {

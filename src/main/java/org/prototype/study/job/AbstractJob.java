@@ -1,6 +1,6 @@
 package org.prototype.study.job;
 
-import org.prototype.study.job.state.JobState;
+import org.prototype.study.job.parameters.JobInputDataList;
 
 public abstract class AbstractJob implements Job{
 
@@ -39,4 +39,8 @@ public abstract class AbstractJob implements Job{
         //TODO  some stuff to validate parameters
     }
 
+    @Override
+    public int compareTo(Job job) {
+        return this.getJobExecutionContext().getPriority().compareTo(job.getJobExecutionContext().getPriority());
+    }
 }

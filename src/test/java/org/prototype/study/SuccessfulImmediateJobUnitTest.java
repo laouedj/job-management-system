@@ -1,7 +1,12 @@
 package org.prototype.study;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
+import org.prototype.study.job.parameters.DataType;
+import org.prototype.study.job.parameters.JobInputDataList;
+import org.prototype.study.job.state.InputData;
 import org.prototype.study.job.state.JobState;
 
 import java.util.ArrayList;
@@ -13,11 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SuccessfulImmediateJobUnitTest {
 
+
+    private JobManager jobManager;
+
+    @BeforeEach
+    public void setUp() {
+        this.jobManager = new DefaultJobManager();
+        this.jobManager.start();
+    }
+
     @Test
     public void oneJobShouldCompleteSuccessfully() throws InterruptedException {
-
-        JobManager jobManager = new DefaultJobManager();
-        jobManager.start();
 
         JobInputDataList jobInputDataList = new JobInputDataList();
         InputData param = new InputData(DataType.STRING, "HELLO");
@@ -33,17 +44,13 @@ public class SuccessfulImmediateJobUnitTest {
         assertNotNull(jobContext.getStartTime());
         assertNotNull(jobContext.getEndTime());
 
-        jobManager.shutdown();
     }
 
 
     @Test
     public void jobsShouldCompleteSuccessfullyWhenLaunchedOneByOne() throws InterruptedException {
 
-
         List<Job> jobsToLaunch = new ArrayList<Job>();
-        JobManager jobManager = new DefaultJobManager();
-        jobManager.start();
 
         for (int i = 1; i < 10; i++) {
 
@@ -71,20 +78,12 @@ public class SuccessfulImmediateJobUnitTest {
             assertNotNull(jobContext.getEndTime());
 
         }
-
-        jobManager.shutdown();
-
-
-    }
+     }
 
     @Test
     public void jobsShouldCompleteSuccessfullyWhenLaunchedByBulk() throws InterruptedException {
 
-        JobManager jobManager = new DefaultJobManager();
-        jobManager.start();
-
         List<Job> jobsToLaunch = new ArrayList<Job>();
-
 
         for (int i = 1; i < 10; i++) {
 
@@ -96,8 +95,6 @@ public class SuccessfulImmediateJobUnitTest {
 
         }
 
-
-
         jobManager.launchMany(jobsToLaunch);
 
 
@@ -108,9 +105,12 @@ public class SuccessfulImmediateJobUnitTest {
             assertNotNull(jobContext.getStartTime());
             assertNotNull(jobContext.getEndTime());
         }
+     }
 
+    @AfterEach
+    void tearDown() {
         jobManager.shutdown();
-
     }
+
 
 }

@@ -1,11 +1,15 @@
 package org.prototype.study;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
+import org.prototype.study.job.parameters.DataType;
+import org.prototype.study.job.parameters.JobInputDataList;
+import org.prototype.study.job.state.InputData;
 import org.prototype.study.job.state.JobState;
 
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,16 +18,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SuccessfulScheduledJobUnitTest {
 
+    private JobManager jobManager;
+
+    @BeforeEach
+    public void setUp() {
+        this.jobManager = new DefaultJobManager();
+        this.jobManager.start();
+    }
+
     @Test
     public void oneScheduledJobShouldCompleteSuccessfully() throws InterruptedException {
 
-        JobManager jobManager = new DefaultJobManager();
-        jobManager.start();
-
         JobInputDataList jobInputDataList = new JobInputDataList();
-
         LocalDateTime scheduleDate = LocalDateTime.now().plusSeconds(10);
-
 
         InputData param = new InputData(DataType.DATE, scheduleDate.toString());
         jobInputDataList.addInputData("schedule.date", param);
@@ -38,18 +45,13 @@ public class SuccessfulScheduledJobUnitTest {
         assertNotNull(jobContext.getStartTime());
         assertNotNull(jobContext.getEndTime());
 
-        jobManager.shutdown();
     }
 
 
     @Test
     public void scheduledJobsShouldCompleteSuccessfullyWhenLaunchedOneByOne() throws InterruptedException {
 
-
         List<Job> jobsToLaunch = new ArrayList<Job>();
-        JobManager jobManager = new DefaultJobManager();
-        jobManager.start();
-
         LocalDateTime scheduleDate = LocalDateTime.now();
 
         for (int i = 1; i < 10; i++) {
@@ -93,17 +95,11 @@ public class SuccessfulScheduledJobUnitTest {
 
         }
 
-        jobManager.shutdown();
-
-
     }
-
 
     @Test
     public void shouldCompleteManyJobSuccessfully() throws InterruptedException {
 
-        JobManager jobManager = new DefaultJobManager();
-        jobManager.start();
 
         LocalDateTime scheduleDate = LocalDateTime.now();
         List<Job> jobsToLaunch = new ArrayList<Job>();
@@ -143,7 +139,11 @@ public class SuccessfulScheduledJobUnitTest {
                 assertNotNull(jobContext.getEndTime());
             }
 
-            jobManager.shutdown();
 
-        }
+    }
+
+    @AfterEach
+    void tearDown() {
+        jobManager.shutdown();
+    }
 }

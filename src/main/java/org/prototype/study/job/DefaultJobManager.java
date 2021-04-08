@@ -4,11 +4,12 @@ import org.prototype.study.job.launch.*;
 
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class DefaultJobManager implements JobManager{
 
     private ExecutorService executorService;
-    private static final int DEFAULT_CORE_POOL_SIZE = 3;
+    private static final int DEFAULT_CORE_POOL_SIZE = 1;
     private JobProducer jobProducer;
     private JobConsumer jobConsumer;
     private  JobQueue jobQueue;
@@ -17,7 +18,7 @@ public class DefaultJobManager implements JobManager{
 
     public DefaultJobManager() {
         this.executorService = Executors.newFixedThreadPool(DEFAULT_CORE_POOL_SIZE);
-        this.jobQueue = new JobSimpleQueue();
+        this.jobQueue = new JobBlockingQueue(new PriorityBlockingQueue<Job>());
         this.jobProducer = new DefaultJobProducer(this.jobQueue);
         this.jobConsumer = new DefaultJobConsumer(this.jobQueue);
     }
@@ -43,7 +44,9 @@ public class DefaultJobManager implements JobManager{
         if (jobs == null || jobs.isEmpty()) {
             return;
         }
-        this.jobProducer.produceMany(jobs);
+
+        List<Job> sortedJobsByPriority = jobs.stream().sorted().collect(Collectors.toList());
+        this.jobProducer.produceMany(sortedJobsByPriority);
     }
 
     @Override

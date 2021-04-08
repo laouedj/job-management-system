@@ -1,4 +1,4 @@
-package org.prototype.study.job;
+package org.prototype.study.job.parameters;
 
 public interface AbstractDataType {
 

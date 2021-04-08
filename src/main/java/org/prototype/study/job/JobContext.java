@@ -1,9 +1,9 @@
 package org.prototype.study.job;
 
+import org.prototype.study.job.parameters.JobInputDataList;
 import org.prototype.study.job.state.JobState;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 
 public class JobContext {
@@ -11,7 +11,7 @@ public class JobContext {
     private final JobInputDataList jobInputDataList;
 
     private JobState status;
-    private JobPriority priority;
+    private JobPriority priority = JobPriority.LOW;  // Default Priority
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private CountDownLatch done;

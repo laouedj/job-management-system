@@ -1,9 +1,10 @@
-package org.prototype.study.job;
+package org.prototype.study.job.parameters;
+
+import org.prototype.study.job.parameters.AbstractDataType;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-public enum DataType implements AbstractDataType{
+public enum DataType implements AbstractDataType {
 
     LONG,
     DOUBLE,

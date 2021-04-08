@@ -1,4 +1,6 @@
-package org.prototype.study.job;
+package org.prototype.study.job.parameters;
+
+import org.prototype.study.job.state.InputData;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

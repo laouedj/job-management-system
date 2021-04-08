@@ -10,10 +10,6 @@ import java.util.concurrent.*;
 
 public class ImmediateJobRunner extends AbstractJobRunner {
 
-
-
-
-
     @Override
     protected Executor getExecutor(Job job, ExecutorService executorService) {
         if (executorService.isShutdown()) {

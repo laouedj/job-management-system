@@ -17,7 +17,7 @@ public class DefaultJobProducer implements JobProducer {
     @Override
     public void produceOne(Job job) {
         try {
-            System.out.println(" Submitting Job .....");
+            System.out.println(" Submitting Job ....." + job.getJobExecutionContext().getJobInputDataList());
             job.getJobExecutionContext().setStatus(JobState.QUEUED);
             jobQueue.put(job);
         } catch (InterruptedException e) {
@@ -31,6 +31,7 @@ public class DefaultJobProducer implements JobProducer {
         if (jobs == null || jobs.isEmpty()) {
             return;
         }
+
         for (Job job : jobs) {
             produceOne(job);
         }
