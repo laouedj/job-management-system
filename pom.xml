@@ -90,7 +90,7 @@
               <manifest>
                 <addClasspath>true</addClasspath>
                 <mainClass>
-                    org.prototype.study.CommandLineJobManagement
+                  org.prototype.study.SendingMailJobCommandLine
                 </mainClass>
               </manifest>
             </archive>

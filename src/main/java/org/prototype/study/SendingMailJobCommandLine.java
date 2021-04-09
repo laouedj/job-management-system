@@ -19,18 +19,18 @@ import java.util.Properties;
  * To specify a job priority ==> add a priority parameter , example
  * priority=LOW
  */
-public class CommandLineJobManagement {
+public class SendingMailJobCommandLine {
 
     private JobManager jobManager;
 
-    CommandLineJobManagement(JobManager jobManager) {
+    SendingMailJobCommandLine(JobManager jobManager) {
         this.jobManager = jobManager;
     }
 
     public static void main(String[] args) {
 
-        CommandLineJobManagement commandLineJobManagement = new CommandLineJobManagement(new DefaultJobManager());
-        commandLineJobManagement.start("Job One", args);
+        SendingMailJobCommandLine sendingMailJobCommandLine = new SendingMailJobCommandLine(new DefaultJobManager());
+        sendingMailJobCommandLine.start("Job One", args);
 
     }
 
