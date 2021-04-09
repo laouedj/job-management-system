@@ -12,8 +12,7 @@ import org.prototype.study.job.state.JobState;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JobPriorityUnitTest {
 
@@ -74,15 +73,21 @@ public class JobPriorityUnitTest {
 
         jobManager.launchMany(jobsToLaunch);
 
-        Thread.sleep(10000L);
 
-/*
-        JobContext jobContext = job.getJobExecutionContext();
-        jobContext.getDone().await();
-        assertEquals(jobContext.getStatus(), JobState.SUCCESS);
-        assertNotNull(jobContext.getStartTime());
-        assertNotNull(jobContext.getEndTime());
-*/
+        //Waiting all job to finish
+        for (Job job : jobsToLaunch) {
+
+            JobContext jobContext = job.getJobExecutionContext();
+            jobContext.getDone().await();
+
+        }
+
+        // Compare start date between jobs to assert that they have executed in priority
+        assertTrue(highJob.getJobExecutionContext().getStartTime().isBefore(mediumJob.getJobExecutionContext().getStartTime()));
+        assertTrue(mediumJob.getJobExecutionContext().getStartTime().isBefore(lowJob.getJobExecutionContext().getStartTime()));
+        assertTrue(highJob2.getJobExecutionContext().getStartTime().isBefore(mediumJob2.getJobExecutionContext().getStartTime()));
+        assertTrue(mediumJob2.getJobExecutionContext().getStartTime().isBefore(lowJob2.getJobExecutionContext().getStartTime()));
+
 
     }
 
