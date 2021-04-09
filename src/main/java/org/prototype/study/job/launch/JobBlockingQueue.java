@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class JobBlockingQueue implements JobQueue {
 
@@ -29,7 +30,7 @@ public class JobBlockingQueue implements JobQueue {
     @Override
     public Job take() throws InterruptedException {
 
-        Job result = jobQueue.take();
+        Job result = jobQueue.poll(5, TimeUnit.SECONDS);
         return result;
     }
 

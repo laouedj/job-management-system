@@ -28,7 +28,7 @@ public class DefaultJobConsumer implements JobConsumer {
             System.out.println("Job taken ....." + job.getJobExecutionContext().getJobInputParameters());
             jobRunner.execute(job);
         } else {
-            System.out.println("Not Job available yet ! .....");
+            System.out.println("No job to execute  ! .....");
         }
     }
 
