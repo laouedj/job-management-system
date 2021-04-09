@@ -4,11 +4,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
-import org.prototype.study.job.parameters.DataType;
-import org.prototype.study.job.parameters.JobInputDataList;
-import org.prototype.study.job.state.InputData;
+import org.prototype.study.job.parameters.JobInputParametersBuilder;
+import org.prototype.study.job.parameters.ParameterType;
+import org.prototype.study.job.parameters.JobInputParameters;
+import org.prototype.study.job.parameters.JobInputParameter;
 import org.prototype.study.job.state.JobState;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,21 +31,28 @@ public class FailedJobWithoutSideEffectUnitTest {
     public void shouldCompleteOthersJobsWhenOneFailed() throws InterruptedException {
 
 
-        JobInputDataList jobInputDataListOne = new JobInputDataList();
-        InputData paramOne = new InputData(DataType.STRING, "HELLO");
-        jobInputDataListOne.addInputData("Greating", paramOne);
-        Job jobOne = new DefaultJob(jobInputDataListOne);
-
-        JobInputDataList jobInputDataListTwo = new JobInputDataList();
-        InputData paramTwo = new InputData(DataType.STRING, "FAILED JOB");
-        jobInputDataListTwo.addInputData("Greating", paramTwo);
-        Job jobTwo = new MockFailedJob(jobInputDataListTwo);
+        JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Job One ", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        Job jobOne = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
 
 
-        JobInputDataList jobInputDataListThree = new JobInputDataList();
-        InputData paramThree = new InputData(DataType.STRING, "Yes !!!");
-        jobInputDataListThree.addInputData("Greating", paramThree);
-        Job jobThree = new DefaultJob(jobInputDataListThree);
+        jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Job Two", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        Job jobTwo = new MockFailedJob(jobInputParametersBuilder.toJobInputParameters());
+
+
+
+
+        jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Job Three", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        Job jobThree = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
+
 
         List<Job> jobsToLaunch = new ArrayList<Job>();
         jobsToLaunch.add(jobOne);
@@ -56,23 +65,23 @@ public class FailedJobWithoutSideEffectUnitTest {
 
         JobContext jobContextOne = jobOne.getJobExecutionContext();
         jobContextOne.getDone().await();
-        assertEquals(jobContextOne.getStatus(), JobState.SUCCESS);
-        assertNotNull(jobContextOne.getStartTime());
-        assertNotNull(jobContextOne.getEndTime());
+        assertEquals(jobContextOne.getStatus(), JobState.SUCCESS, "Job should succeed");
+        assertNotNull(jobContextOne.getStartTime(), "Start Time should not be null");
+        assertNotNull(jobContextOne.getEndTime(), "End Time should not be null");
 
         JobContext jobContextTwo = jobTwo.getJobExecutionContext();
         jobContextTwo.getDone().await();
-        assertEquals(jobContextTwo.getStatus(), JobState.FAILED);
-        assertNotNull(jobContextTwo.getStartTime());
-        assertNotNull(jobContextTwo.getEndTime());
-        assertNotNull(jobContextTwo.getError());
+        assertEquals(jobContextTwo.getStatus(), JobState.FAILED, "Job should failed");
+        assertNotNull(jobContextTwo.getStartTime(),"Start Time should not be null");
+        assertNotNull(jobContextTwo.getEndTime(),"End Time should not be null");
+        assertNotNull(jobContextTwo.getError(),"Error should not be null");
 
 
         JobContext jobContextThree = jobThree.getJobExecutionContext();
         jobContextThree.getDone().await();
-        assertEquals(jobContextThree.getStatus(), JobState.SUCCESS);
-        assertNotNull(jobContextThree.getStartTime());
-        assertNotNull(jobContextThree.getEndTime());
+        assertEquals(jobContextThree.getStatus(), JobState.SUCCESS, "Job should succeed");
+        assertNotNull(jobContextThree.getStartTime(), "Start Time should not be null");
+        assertNotNull(jobContextThree.getEndTime(), "End Time should not be null");
 
     }
 

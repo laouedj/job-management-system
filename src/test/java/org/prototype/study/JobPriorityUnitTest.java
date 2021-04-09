@@ -4,11 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
-import org.prototype.study.job.parameters.DataType;
-import org.prototype.study.job.parameters.JobInputDataList;
-import org.prototype.study.job.state.InputData;
-import org.prototype.study.job.state.JobState;
+import org.prototype.study.job.parameters.JobInputParametersBuilder;
+import org.prototype.study.job.parameters.ParameterType;
+import org.prototype.study.job.parameters.JobInputParameters;
+import org.prototype.study.job.parameters.JobInputParameter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,45 +30,55 @@ public class JobPriorityUnitTest {
 
         List<Job> jobsToLaunch = new ArrayList<Job>();
 
-        JobInputDataList jobInputDataList = new JobInputDataList();
-        InputData param = new InputData(DataType.STRING, "HELLO LOW JOB 1");
-        jobInputDataList.addInputData("Greating", param);
-        Job lowJob = new DefaultJob(jobInputDataList);
+
+        JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Job One with low priority", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        Job lowJob = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
         lowJob.getJobExecutionContext().setPriority(JobPriority.LOW);
         jobsToLaunch.add(lowJob);
 
-        jobInputDataList = new JobInputDataList();
-        param = new InputData(DataType.STRING, "HELLO MEDIUM JOB");
-        jobInputDataList.addInputData("Greating", param);
-        Job mediumJob = new DefaultJob(jobInputDataList);
+
+        jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Job Two with medium priority", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        Job mediumJob = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
         mediumJob.getJobExecutionContext().setPriority(JobPriority.MEDIUM);
         jobsToLaunch.add(mediumJob);
 
-        jobInputDataList = new JobInputDataList();
-        param = new InputData(DataType.STRING, "HELLO HIGH JOB");
-        jobInputDataList.addInputData("Greating", param);
-        Job highJob = new DefaultJob(jobInputDataList);
+
+        jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Job Three with high priority", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        Job highJob = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
         highJob.getJobExecutionContext().setPriority(JobPriority.HIGH);
         jobsToLaunch.add(highJob);
 
-        jobInputDataList = new JobInputDataList();
-        param = new InputData(DataType.STRING, "HELLO LOW JOB 2");
-        jobInputDataList.addInputData("Greating", param);
-        Job lowJob2 = new DefaultJob(jobInputDataList);
+
+        jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Job Four with low priority", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        Job lowJob2 = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
         lowJob2.getJobExecutionContext().setPriority(JobPriority.LOW);
         jobsToLaunch.add(lowJob2);
 
-        jobInputDataList = new JobInputDataList();
-        param = new InputData(DataType.STRING, "HELLO MEDIUM JOB 2");
-        jobInputDataList.addInputData("Greating", param);
-        Job mediumJob2 = new DefaultJob(jobInputDataList);
+        jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Job Five with medium priority", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        Job mediumJob2 = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
         mediumJob2.getJobExecutionContext().setPriority(JobPriority.MEDIUM);
         jobsToLaunch.add(mediumJob2);
 
-        jobInputDataList = new JobInputDataList();
-        param = new InputData(DataType.STRING, "HELLO HIGH JOB 2");
-        jobInputDataList.addInputData("Greating", param);
-        Job highJob2 = new DefaultJob(jobInputDataList);
+        jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Job Six  with high priority", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        Job highJob2 = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
         highJob2.getJobExecutionContext().setPriority(JobPriority.HIGH);
         jobsToLaunch.add(highJob2);
 
@@ -83,10 +94,10 @@ public class JobPriorityUnitTest {
         }
 
         // Compare start date between jobs to assert that they have executed in priority
-        assertTrue(highJob.getJobExecutionContext().getStartTime().isBefore(mediumJob.getJobExecutionContext().getStartTime()));
-        assertTrue(mediumJob.getJobExecutionContext().getStartTime().isBefore(lowJob.getJobExecutionContext().getStartTime()));
-        assertTrue(highJob2.getJobExecutionContext().getStartTime().isBefore(mediumJob2.getJobExecutionContext().getStartTime()));
-        assertTrue(mediumJob2.getJobExecutionContext().getStartTime().isBefore(lowJob2.getJobExecutionContext().getStartTime()));
+        assertTrue(highJob.getJobExecutionContext().getStartTime().isBefore(mediumJob.getJobExecutionContext().getStartTime()), "A Job with high priority should be executed before a job  with medium priority");
+        assertTrue(mediumJob.getJobExecutionContext().getStartTime().isBefore(lowJob.getJobExecutionContext().getStartTime()), "A Job with medium priority should be executed before a job  with low priority");
+        assertTrue(highJob2.getJobExecutionContext().getStartTime().isBefore(mediumJob2.getJobExecutionContext().getStartTime()), "A Job with high priority should be executed before a job  with medium priority");
+        assertTrue(mediumJob2.getJobExecutionContext().getStartTime().isBefore(lowJob2.getJobExecutionContext().getStartTime()),"A Job with medium priority should be executed before a job  with low priority");
 
 
     }

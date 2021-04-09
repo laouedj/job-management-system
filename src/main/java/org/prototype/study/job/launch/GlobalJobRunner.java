@@ -1,7 +1,7 @@
 package org.prototype.study.job.launch;
 
 import org.prototype.study.job.Job;
-import org.prototype.study.job.parameters.JobInputDataList;
+import org.prototype.study.job.parameters.JobInputParameters;
 import org.prototype.study.job.launch.scheduling.ExecutionMode;
 import org.prototype.study.job.launch.scheduling.ScheduledJobRunner;
 
@@ -28,9 +28,9 @@ public class GlobalJobRunner implements JobRunner {
     @Override
     public void execute(Job job) {
 
-        JobInputDataList inputDataList = job.getJobExecutionContext().getJobInputDataList();
-        if (inputDataList.getInputData("schedule.date") != null) {
-            System.out.println("Job is scheduled on " + inputDataList.getInputData("schedule.date"));
+        JobInputParameters inputDataList = job.getJobExecutionContext().getJobInputParameters();
+        if (inputDataList.getJobInputParameter("schedule.date") != null) {
+            System.out.println("Job is scheduled on " + inputDataList.getJobInputParameter("schedule.date"));
             compositeJobRunner.get(ExecutionMode.SCHEDULED).execute(job);
         }else {
             compositeJobRunner.get(ExecutionMode.IMMEDIATE).execute(job);

@@ -1,6 +1,6 @@
 package org.prototype.study.job;
 
-import org.prototype.study.job.parameters.JobInputDataList;
+import org.prototype.study.job.parameters.JobInputParameters;
 
 public abstract class AbstractJob implements Job{
 
@@ -11,10 +11,9 @@ public abstract class AbstractJob implements Job{
         this.jobContext = jobContext;
     }
 
-    public AbstractJob(JobInputDataList jobInputDataList) {
-        this(new JobContext(jobInputDataList));
+    public AbstractJob(JobInputParameters jobInputParameters) {
+        this(new JobContext(jobInputParameters));
     }
-
 
     @Override
     public JobContext getJobExecutionContext() {
@@ -26,7 +25,7 @@ public abstract class AbstractJob implements Job{
 
     @Override
     public void execute(){
-        validateParameters(this.jobContext.getJobInputDataList());
+        validateParameters(this.jobContext.getJobInputParameters());
         doExecute();
     }
 
@@ -35,12 +34,27 @@ public abstract class AbstractJob implements Job{
         execute();
     }
 
-    private void validateParameters(JobInputDataList jobInputDataList) {
+    private void validateParameters(JobInputParameters jobInputParameters) {
         //TODO  some stuff to validate parameters
     }
 
     @Override
     public int compareTo(Job job) {
         return this.getJobExecutionContext().getPriority().compareTo(job.getJobExecutionContext().getPriority());
+    }
+
+    public static class JobBuilder {
+
+        protected JobContext jobContext;
+
+        JobBuilder buildContext(JobContext jobContext) {
+            this.jobContext = jobContext;
+            return this;
+        }
+
+        //JobBuilder buildParameters()
+
+
+
     }
 }

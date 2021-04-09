@@ -4,7 +4,6 @@ import org.prototype.study.job.Job;
 import org.prototype.study.job.state.JobState;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 public class DefaultJobProducer implements JobProducer {
 
@@ -17,7 +16,7 @@ public class DefaultJobProducer implements JobProducer {
     @Override
     public void produceOne(Job job) {
         try {
-            System.out.println(" Submitting Job ....." + job.getJobExecutionContext().getJobInputDataList());
+            System.out.println(" Submitting Job ....." + job.getJobExecutionContext().getJobInputParameters());
             job.getJobExecutionContext().setStatus(JobState.QUEUED);
             jobQueue.put(job);
         } catch (InterruptedException e) {

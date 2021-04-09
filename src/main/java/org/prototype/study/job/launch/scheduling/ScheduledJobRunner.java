@@ -20,7 +20,7 @@ public class ScheduledJobRunner extends AbstractJobRunner {
 
     private long getExecutionDelay(Job job) {
         //Should handle Time Zone
-        LocalDateTime scheduleTime = (LocalDateTime) job.getJobExecutionContext().getJobInputDataList().getInputData("schedule.date");
+        LocalDateTime scheduleTime = (LocalDateTime) job.getJobExecutionContext().getJobInputParameters().getJobInputParameter("schedule.date");
         LocalDateTime currentTime = LocalDateTime.now();
         long delay = Duration.between(currentTime,scheduleTime).getSeconds();
         return delay;

@@ -1,13 +1,11 @@
-package org.prototype.study.job.state;
+package org.prototype.study.job.parameters;
 
-import org.prototype.study.job.parameters.DataType;
-
-public class InputData {
+public class JobInputParameter {
 
     private final Object value;
-    private final DataType type;
+    private final ParameterType type;
 
-    public InputData(DataType type, Object value) {
+    public JobInputParameter(ParameterType type, Object value) {
         this.type = type;
         this.value = value;
     }
@@ -17,13 +15,13 @@ public class InputData {
         return this.type.getValue(value);
     }
 
-    public DataType getType() {
+    public ParameterType getType() {
         return type;
     }
 
     @Override
     public String toString() {
-        return "InputData{" +
+        return "JobInputParameter{" +
                 "value=" + value +
                 ", type=" + type +
                 '}';

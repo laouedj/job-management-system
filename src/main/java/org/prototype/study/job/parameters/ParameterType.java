@@ -4,7 +4,7 @@ import org.prototype.study.job.parameters.AbstractDataType;
 
 import java.time.LocalDateTime;
 
-public enum DataType implements AbstractDataType {
+public enum ParameterType implements AbstractDataType {
 
     LONG,
     DOUBLE,
@@ -12,7 +12,7 @@ public enum DataType implements AbstractDataType {
     DATE {
         @Override
         public LocalDateTime getValue(Object input) {
-            return LocalDateTime.parse((String)input);
+            return LocalDateTime.parse(input.toString());
         }
     };
 

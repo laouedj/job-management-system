@@ -1,6 +1,6 @@
 package org.prototype.study.job;
 
-import org.prototype.study.job.parameters.JobInputDataList;
+import org.prototype.study.job.parameters.JobInputParameters;
 import org.prototype.study.job.state.JobState;
 
 import java.time.LocalDateTime;
@@ -8,7 +8,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class JobContext {
 
-    private final JobInputDataList jobInputDataList;
+    private final JobInputParameters jobInputParameters;
 
     private JobState status;
     private JobPriority priority = JobPriority.LOW;  // Default Priority
@@ -18,9 +18,9 @@ public class JobContext {
     private Throwable error;
 
 
-    public JobContext(JobInputDataList jobInputDataList) {
+    public JobContext(JobInputParameters jobInputParameters) {
 
-        this.jobInputDataList = jobInputDataList;
+        this.jobInputParameters = jobInputParameters;
         done = new CountDownLatch(1);
     }
 
@@ -68,8 +68,8 @@ public class JobContext {
         this.error = error;
     }
 
-    public JobInputDataList getJobInputDataList() {
-        return jobInputDataList;
+    public JobInputParameters getJobInputParameters() {
+        return jobInputParameters;
     }
 
     public void setDone(CountDownLatch done) {

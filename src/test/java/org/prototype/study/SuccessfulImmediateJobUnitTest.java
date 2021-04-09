@@ -4,13 +4,17 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
-import org.prototype.study.job.parameters.DataType;
-import org.prototype.study.job.parameters.JobInputDataList;
-import org.prototype.study.job.state.InputData;
+import org.prototype.study.job.parameters.JobInputParametersBuilder;
+import org.prototype.study.job.parameters.ParameterType;
+import org.prototype.study.job.parameters.JobInputParameters;
+import org.prototype.study.job.parameters.JobInputParameter;
 import org.prototype.study.job.state.JobState;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,19 +34,22 @@ public class SuccessfulImmediateJobUnitTest {
     @Test
     public void oneJobShouldCompleteSuccessfully() throws InterruptedException {
 
-        JobInputDataList jobInputDataList = new JobInputDataList();
-        InputData param = new InputData(DataType.STRING, "HELLO");
-        jobInputDataList.addInputData("Greating", param);
-        Job job = new DefaultJob(jobInputDataList);
+
+        JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Hello", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2",  7, ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+
+        Job job = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
 
         jobManager.launchOne(job);
 
 
         JobContext jobContext = job.getJobExecutionContext();
         jobContext.getDone().await();
-        assertEquals(jobContext.getStatus(), JobState.SUCCESS);
-        assertNotNull(jobContext.getStartTime());
-        assertNotNull(jobContext.getEndTime());
+        assertEquals(jobContext.getStatus(), JobState.SUCCESS, "Job should succeed");
+        assertNotNull(jobContext.getStartTime(), "Start Time is null");
+        assertNotNull(jobContext.getEndTime(), "End Time is null");
 
     }
 
@@ -54,10 +61,14 @@ public class SuccessfulImmediateJobUnitTest {
 
         for (int i = 1; i < 10; i++) {
 
-            JobInputDataList jobInputDataList = new JobInputDataList();
-            InputData param = new InputData(DataType.STRING, "HELLO " + i);
-            jobInputDataList.addInputData("Greating", param);
-            Job job = new DefaultJob(jobInputDataList);
+            JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
+            jobInputParametersBuilder.addInputParameter("param.key.1", "Hello " + i, ParameterType.STRING);
+            jobInputParametersBuilder.addInputParameter("param.key.2",  i, ParameterType.LONG);
+            jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+
+
+            Job job = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
+
             jobsToLaunch.add(job);
         }
 
@@ -73,9 +84,9 @@ public class SuccessfulImmediateJobUnitTest {
 
             JobContext jobContext = job.getJobExecutionContext();
             jobContext.getDone().await();
-            assertEquals(jobContext.getStatus(), JobState.SUCCESS);
-            assertNotNull(jobContext.getStartTime());
-            assertNotNull(jobContext.getEndTime());
+            assertEquals(jobContext.getStatus(), JobState.SUCCESS, "Job should succeed");
+            assertNotNull(jobContext.getStartTime(),"Start Time is null");
+            assertNotNull(jobContext.getEndTime(), "End Time is null");
 
         }
      }
@@ -87,10 +98,13 @@ public class SuccessfulImmediateJobUnitTest {
 
         for (int i = 1; i < 10; i++) {
 
-            JobInputDataList jobInputDataList = new JobInputDataList();
-            InputData param = new InputData(DataType.STRING, "HELLO " + i);
-            jobInputDataList.addInputData("Greating", param);
-            Job job = new DefaultJob(jobInputDataList);
+            JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
+            jobInputParametersBuilder.addInputParameter("param.key.1", "Hello " + i, ParameterType.STRING);
+            jobInputParametersBuilder.addInputParameter("param.key.2",  i, ParameterType.LONG);
+            jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+
+
+            Job job = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
             jobsToLaunch.add(job);
 
         }
@@ -101,9 +115,9 @@ public class SuccessfulImmediateJobUnitTest {
         for (Job job : jobsToLaunch) {
             JobContext jobContext = job.getJobExecutionContext();
             jobContext.getDone().await();
-            assertEquals(jobContext.getStatus(), JobState.SUCCESS);
-            assertNotNull(jobContext.getStartTime());
-            assertNotNull(jobContext.getEndTime());
+            assertEquals(jobContext.getStatus(), JobState.SUCCESS, "Job should succeed");
+            assertNotNull(jobContext.getStartTime(),"Start Time is null");
+            assertNotNull(jobContext.getEndTime(), "End Time is null");
         }
      }
 
