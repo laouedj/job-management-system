@@ -1,15 +1,11 @@
 package org.prototype.study.job.launch;
 
-import org.prototype.study.job.DefaultJobManager;
+import org.prototype.study.ConfigurationManager;
 import org.prototype.study.job.Job;
-import org.prototype.study.job.JobContext;
 import org.prototype.study.job.state.StateManager;
 import org.prototype.study.job.state.StateUpdater;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Properties;
 import java.util.concurrent.*;
 
 public abstract class AbstractJobRunner implements JobRunner {
@@ -25,13 +21,10 @@ public abstract class AbstractJobRunner implements JobRunner {
     @Override
     public void start() {
 
-        try {
             this.stateManager = new StateManager();
-            Properties appProps = new Properties();
-            if (appProps.getProperty("runner.core.pool.size") != null) {
-                this.corePoolSize = Integer.valueOf(appProps.getProperty("runner.core.pool.size"));
+        if (ConfigurationManager.getPropertyValue("runner.core.pool.size") != null) {
+            corePoolSize = Integer.valueOf(ConfigurationManager.getPropertyValue("runner.core.pool.size"));
             }
-            appProps.load(DefaultJobManager.class.getResourceAsStream("/configuration.properties"));
 
             this.executorService = Executors.newFixedThreadPool(this.corePoolSize);
             if (this.executorService.isShutdown()) {
@@ -42,9 +35,6 @@ public abstract class AbstractJobRunner implements JobRunner {
 
             started = true;
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override

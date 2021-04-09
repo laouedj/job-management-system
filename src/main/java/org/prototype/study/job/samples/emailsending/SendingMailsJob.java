@@ -19,6 +19,11 @@ public class SendingMailsJob extends AbstractJob {
     protected void doExecute() {
 
         String filePath = (String) getJobExecutionContext().getJobInputParameters().getJobInputParameter("file.path");
+
+        if (filePath == null ) {
+            throw new IllegalArgumentException("File Path of email list should be specified");
+        }
+
         System.out.println("Scanning file ... " + filePath);
 
         Scanner fileScanner = new Scanner(SendingMailsJob.class.getResourceAsStream(filePath), "UTF-8");

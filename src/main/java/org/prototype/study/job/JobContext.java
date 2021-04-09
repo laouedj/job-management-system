@@ -21,6 +21,10 @@ public class JobContext {
     public JobContext(JobInputParameters jobInputParameters) {
 
         this.jobInputParameters = jobInputParameters;
+        if (jobInputParameters.getJobInputParameter("priority") != null) {
+            String priority = (String) jobInputParameters.getJobInputParameter("priority");
+            this.priority = JobPriority.valueOf(priority.toUpperCase());
+        }
         done = new CountDownLatch(1);
     }
 

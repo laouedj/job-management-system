@@ -1,13 +1,13 @@
 package org.prototype.study.job;
 
+import org.prototype.study.ConfigurationManager;
 import org.prototype.study.job.launch.*;
-import org.prototype.study.job.samples.emailsending.SendingMailsJob;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class DefaultJobManager implements JobManager{
@@ -82,12 +82,9 @@ public class DefaultJobManager implements JobManager{
 
     @Override
     public void start() {
-        Properties appProps = new Properties();
-        try {
 
-            appProps.load(DefaultJobManager.class.getResourceAsStream("/configuration.properties"));
-            if (appProps.getProperty("consumer.core.pool.size") != null) {
-                corePoolSize = Integer.valueOf(appProps.getProperty("consumer.core.pool.size"));
+        if (ConfigurationManager.getPropertyValue("consumer.core.pool.size") != null) {
+            corePoolSize = Integer.valueOf(ConfigurationManager.getPropertyValue("consumer.core.pool.size"));
             }
             this.executorService = Executors.newFixedThreadPool(corePoolSize);
 
@@ -96,9 +93,6 @@ public class DefaultJobManager implements JobManager{
             this.jobConsumer.start();
             executorService.execute(this.jobConsumer);
             this.started = true;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 

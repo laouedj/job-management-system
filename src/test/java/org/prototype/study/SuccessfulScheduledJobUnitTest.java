@@ -4,10 +4,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
+import org.prototype.study.job.parameters.JobInputParameters;
 import org.prototype.study.job.parameters.JobInputParametersBuilder;
 import org.prototype.study.job.parameters.ParameterType;
-import org.prototype.study.job.parameters.JobInputParameters;
-import org.prototype.study.job.parameters.JobInputParameter;
 import org.prototype.study.job.state.JobState;
 
 import java.time.LocalDateTime;
@@ -70,7 +69,7 @@ public class SuccessfulScheduledJobUnitTest {
 
             JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
             jobInputParametersBuilder.addInputParameter("param.1", "HELLO " + i, ParameterType.STRING);
-            jobInputParametersBuilder.addInputParameter("schedule.date", scheduleDate.plusSeconds(i*10), ParameterType.DATE);
+            jobInputParametersBuilder.addInputParameter("schedule.date", scheduleDate.plusSeconds(i * 5), ParameterType.DATE);
             JobInputParameters jobInputParameters = jobInputParametersBuilder.toJobInputParameters();
             Job job = new DefaultJob(jobInputParameters);
             jobsToLaunch.add(job);
@@ -109,12 +108,11 @@ public class SuccessfulScheduledJobUnitTest {
         List<Job> jobsToLaunch = new ArrayList<Job>();
 
 
-
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 5; i++) {
 
             JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
             jobInputParametersBuilder.addInputParameter("param.1", "HELLO " + i, ParameterType.STRING);
-            jobInputParametersBuilder.addInputParameter("schedule.date", scheduleDate.plusSeconds(i*10), ParameterType.DATE);
+            jobInputParametersBuilder.addInputParameter("schedule.date", scheduleDate.plusSeconds(i * 5), ParameterType.DATE);
             JobInputParameters jobInputParameters = jobInputParametersBuilder.toJobInputParameters();
             Job job = new DefaultJob(jobInputParameters);
             jobsToLaunch.add(job);

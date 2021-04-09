@@ -26,6 +26,7 @@ public class DefaultJobConsumer implements JobConsumer {
     public void consume(Job job) {
         if (job != null) {
             System.out.println("Job taken ....." + job.getJobExecutionContext().getJobInputParameters());
+            System.out.println("Launching Job with priority " + job.getJobExecutionContext().getPriority());
             jobRunner.execute(job);
         } else {
             System.out.println("No job to execute  ! .....");

@@ -1,9 +1,9 @@
 package org.prototype.study.job.launch;
 
 import org.prototype.study.job.Job;
-import org.prototype.study.job.parameters.JobInputParameters;
 import org.prototype.study.job.launch.scheduling.ExecutionMode;
 import org.prototype.study.job.launch.scheduling.ScheduledJobRunner;
+import org.prototype.study.job.parameters.JobInputParameters;
 
 import java.util.Collections;
 import java.util.HashMap;
