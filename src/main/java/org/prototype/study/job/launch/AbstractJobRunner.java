@@ -23,24 +23,41 @@ public abstract class AbstractJobRunner implements JobRunner {
 
         this.stateManager = new StateManager();
 
-        if (ConfigurationManager.getPropertyValue("runner.core.pool.size") != null) {
-            corePoolSize = Integer.valueOf(ConfigurationManager.getPropertyValue("runner.core.pool.size"));
-        }
+        loadConfiguration();
 
-        this.executorService = Executors.newFixedThreadPool(this.corePoolSize);
-        if (this.executorService.isShutdown()) {
-            System.out.println("The Runner executor is not started ....");
-            throw new RuntimeException("The Runner executor is shutdown ....");
-        }
-        System.out.println("Runner " + this.getClass().getName() + " Started with Core Pool Size = " + this.corePoolSize);
+        startExecutor();
 
         started = true;
 
     }
 
+    private void startExecutor() {
+        this.executorService = Executors.newFixedThreadPool(this.corePoolSize);
+
+        if (this.executorService.isShutdown()) {
+            System.out.println("The Runner executor is not started ....");
+            throw new RuntimeException("The Runner executor is shutdown ....");
+        }
+        System.out.println("Runner " + this.getClass().getName() + " Started with Core Pool Size = " + this.corePoolSize);
+    }
+
+    private void loadConfiguration() {
+        if (ConfigurationManager.getPropertyValue("runner.core.pool.size") != null) {
+            corePoolSize = Integer.valueOf(ConfigurationManager.getPropertyValue("runner.core.pool.size"));
+        }
+    }
+
     @Override
     public void shutdown() {
         System.out.println("Shutdown Runner ExecutorService ....");
+
+        shutdownExecutor();
+
+        this.started = false;
+
+    }
+
+    private void shutdownExecutor() {
         this.executorService.shutdown();
         try {
             if (!this.executorService.awaitTermination(900, TimeUnit.MILLISECONDS)) {
@@ -49,14 +66,11 @@ public abstract class AbstractJobRunner implements JobRunner {
         } catch (InterruptedException e) {
             this.executorService.shutdownNow();
         }
-        this.started = false;
-
         if (this.executorService.isShutdown()) {
-            System.out.println(" Runner ExecutorService is down....");
-        } else {
-            System.out.println(" Can't Shutdown Runner ExecutorService....");
-        }
-
+             System.out.println(" Runner ExecutorService is down....");
+         } else {
+             System.out.println(" Can't Shutdown Runner ExecutorService....");
+         }
     }
 
     @Override

@@ -34,18 +34,21 @@ public class DefaultJobConsumer implements JobConsumer {
     private void doStartConsumer() {
 
         this.end = new CountDownLatch(1);
+        loadConfiguration();
+        startExecutor();
 
+    }
+
+    private void startExecutor() {
+        this.executorService = Executors.newFixedThreadPool(corePoolSize);
+        System.out.println("Consumer Started with Core Pool Size = " + corePoolSize);
+        executorService.execute(this);
+    }
+
+    private void loadConfiguration() {
         if (ConfigurationManager.getPropertyValue("consumer.core.pool.size") != null) {
             corePoolSize = Integer.valueOf(ConfigurationManager.getPropertyValue("consumer.core.pool.size"));
         }
-
-        this.executorService = Executors.newFixedThreadPool(corePoolSize);
-
-        System.out.println("Consumer Started with Core Pool Size = " + corePoolSize);
-
-        executorService.execute(this);
-
-
     }
 
     @Override
@@ -61,12 +64,13 @@ public class DefaultJobConsumer implements JobConsumer {
 
     @Override
     public void shutdown() {
-        doShutdownConsumer();
+        end.countDown();
+        shutdownExecutor();
         this.jobRunner.shutdown();
     }
 
 
-    private void doShutdownConsumer() {
+    private void shutdownExecutor() {
         System.out.println("Shutdown Consumer Executor service .....");
         executorService.shutdown();
 
@@ -83,8 +87,6 @@ public class DefaultJobConsumer implements JobConsumer {
         } else {
             System.out.println("can't shutdwon Consumer Executor service.....");
         }
-
-        end.countDown();
     }
 
     @Override

@@ -64,17 +64,25 @@ public class JobInputParametersBuilder {
             String key = (String) entry.getKey();
             String value = (String) entry.getValue();
 
-            if (key.contains(".date")) {
-                JobInputParameter jobInputParameter = new JobInputParameter(ParameterType.DATE, value);
-                this.jobInputParameterMap.put(key, jobInputParameter);
-            } else {
-                JobInputParameter jobInputParameter = new JobInputParameter(ParameterType.STRING, value);
-                this.jobInputParameterMap.put(key, jobInputParameter);
-            }
+            ParameterType parameterType =  getParameterType(key);
+
+            JobInputParameter jobInputParameter = new JobInputParameter(parameterType, value);
+            this.jobInputParameterMap.put(key, jobInputParameter);
 
         }
 
         return this;
+    }
+
+    private ParameterType getParameterType(String key) {
+        if (isDate(key)) {
+            return ParameterType.DATE;
+        }
+        return ParameterType.STRING;
+    }
+
+    private boolean isDate(String key) {
+        return key.contains(".date");
     }
 
 

@@ -15,13 +15,17 @@ public class JobBlockingQueue implements JobQueue {
 
     public JobBlockingQueue(BlockingQueue<Job> jobQueue) {
 
-        if (ConfigurationManager.getPropertyValue("job.queue.polling.timeout") != null) {
-            queuePollingTimeout = Integer.valueOf(ConfigurationManager.getPropertyValue("job.queue.polling.timeout"));
-        }
+        loadConfiguration();
 
         this.jobQueue = jobQueue;
 
         System.out.println(" Job Queue Started with Polling timeout " + queuePollingTimeout);
+    }
+
+    private void loadConfiguration() {
+        if (ConfigurationManager.getPropertyValue("job.queue.polling.timeout") != null) {
+            queuePollingTimeout = Integer.valueOf(ConfigurationManager.getPropertyValue("job.queue.polling.timeout"));
+        }
     }
 
     public JobBlockingQueue() {
