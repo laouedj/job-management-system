@@ -1,1 +1,0 @@
-java -jar job-management-system-1.0-SNAPSHOT.jar  schedule.date=2021-04-09T23:32:00 file.path=emails.txt

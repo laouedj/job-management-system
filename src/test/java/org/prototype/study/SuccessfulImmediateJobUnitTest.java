@@ -6,11 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
 import org.prototype.study.job.parameters.JobInputParametersBuilder;
 import org.prototype.study.job.parameters.ParameterType;
+import org.prototype.study.job.parameters.JobInputParameters;
+import org.prototype.study.job.parameters.JobInputParameter;
 import org.prototype.study.job.state.JobState;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,9 +36,9 @@ public class SuccessfulImmediateJobUnitTest {
 
 
         JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
-        jobInputParametersBuilder.addInputParameter("param.key.1", "Hello", ParameterType.STRING)
-                .addInputParameter("param.key.2", 7, ParameterType.LONG)
-                .addInputParameter("param.key.3", LocalDateTime.now(), ParameterType.DATE);
+        jobInputParametersBuilder.addInputParameter("param.key.1", "Hello", ParameterType.STRING);
+        jobInputParametersBuilder.addInputParameter("param.key.2",  7, ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
 
         Job job = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
 
@@ -55,7 +59,7 @@ public class SuccessfulImmediateJobUnitTest {
 
         List<Job> jobsToLaunch = new ArrayList<Job>();
 
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 10; i++) {
 
             JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
             jobInputParametersBuilder.addInputParameter("param.key.1", "Hello " + i, ParameterType.STRING);
@@ -92,7 +96,7 @@ public class SuccessfulImmediateJobUnitTest {
 
         List<Job> jobsToLaunch = new ArrayList<Job>();
 
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 10; i++) {
 
             JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
             jobInputParametersBuilder.addInputParameter("param.key.1", "Hello " + i, ParameterType.STRING);

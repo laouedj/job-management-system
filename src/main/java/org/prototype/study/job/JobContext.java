@@ -10,7 +10,7 @@ public class JobContext {
 
     private final JobInputParameters jobInputParameters;
 
-    private JobState status;
+    private JobState status = JobState.QUEUED;
     private JobPriority priority = JobPriority.LOW;  // Default Priority
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -21,10 +21,6 @@ public class JobContext {
     public JobContext(JobInputParameters jobInputParameters) {
 
         this.jobInputParameters = jobInputParameters;
-        if (jobInputParameters.getJobInputParameter("priority") != null) {
-            String priority = (String) jobInputParameters.getJobInputParameter("priority");
-            this.priority = JobPriority.valueOf(priority.toUpperCase());
-        }
         done = new CountDownLatch(1);
     }
 

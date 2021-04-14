@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
 import org.prototype.study.job.parameters.JobInputParametersBuilder;
 import org.prototype.study.job.parameters.ParameterType;
+import org.prototype.study.job.parameters.JobInputParameters;
+import org.prototype.study.job.parameters.JobInputParameter;
 import org.prototype.study.job.state.JobState;
 
 import java.time.LocalDateTime;

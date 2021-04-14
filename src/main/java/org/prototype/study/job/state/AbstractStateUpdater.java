@@ -1,6 +1,7 @@
 package org.prototype.study.job.state;
 
 import org.prototype.study.job.Job;
+import org.prototype.study.job.state.StateUpdater;
 
 public abstract class AbstractStateUpdater implements StateUpdater {
 

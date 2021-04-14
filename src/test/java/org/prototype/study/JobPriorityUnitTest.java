@@ -6,12 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
 import org.prototype.study.job.parameters.JobInputParametersBuilder;
 import org.prototype.study.job.parameters.ParameterType;
+import org.prototype.study.job.parameters.JobInputParameters;
+import org.prototype.study.job.parameters.JobInputParameter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JobPriorityUnitTest {
 

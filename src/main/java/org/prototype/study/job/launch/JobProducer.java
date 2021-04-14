@@ -10,4 +10,8 @@ public interface JobProducer {
 
     void produceMany(List<Job> jobs) ;
 
+    void start();
+
+    void shutdown();
+
 }

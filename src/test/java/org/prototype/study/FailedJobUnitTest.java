@@ -4,18 +4,16 @@ package org.prototype.study;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.prototype.study.job.DefaultJobManager;
-import org.prototype.study.job.Job;
-import org.prototype.study.job.JobContext;
-import org.prototype.study.job.JobManager;
+import org.prototype.study.job.*;
 import org.prototype.study.job.parameters.JobInputParametersBuilder;
 import org.prototype.study.job.parameters.ParameterType;
+import org.prototype.study.job.parameters.JobInputParameters;
+import org.prototype.study.job.parameters.JobInputParameter;
 import org.prototype.study.job.state.JobState;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test for simple App.
