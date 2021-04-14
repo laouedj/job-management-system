@@ -29,8 +29,8 @@ public abstract class AbstractJobRunner implements JobRunner {
 
         this.executorService = Executors.newFixedThreadPool(this.corePoolSize);
         if (this.executorService.isShutdown()) {
-            System.out.println("The executor is not started ....");
-            throw new RuntimeException("The executor is shutdown ....");
+            System.out.println("The Runner executor is not started ....");
+            throw new RuntimeException("The Runner executor is shutdown ....");
         }
         System.out.println("Runner " + this.getClass().getName() + " Started with Core Pool Size = " + this.corePoolSize);
 

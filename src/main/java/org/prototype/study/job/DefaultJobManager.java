@@ -39,7 +39,7 @@ public class DefaultJobManager implements JobManager {
     @Override
     public void shutdown() {
         this.jobConsumer.shutdown();
-        this.jobProducer.start();
+        this.jobProducer.shutdown();
     }
 
 
