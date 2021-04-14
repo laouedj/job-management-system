@@ -4,10 +4,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
+import org.prototype.study.job.parameters.JobInputParameters;
 import org.prototype.study.job.parameters.JobInputParametersBuilder;
 import org.prototype.study.job.parameters.ParameterType;
-import org.prototype.study.job.parameters.JobInputParameters;
-import org.prototype.study.job.parameters.JobInputParameter;
 import org.prototype.study.job.state.JobState;
 
 import java.time.LocalDateTime;
@@ -19,10 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SuccessfulScheduledJobUnitTest {
 
-    private JobManager jobManager;
-
     // Accepted late time duration (in seconds) to begin a scheduled job
     private static final long ACCEPTED_DELTA_DURATION = 2;
+    private JobManager jobManager;
 
     @BeforeEach
     public void setUp() {
@@ -34,7 +32,7 @@ public class SuccessfulScheduledJobUnitTest {
     public void oneScheduledJobShouldCompleteSuccessfully() throws InterruptedException {
 
 
-        LocalDateTime scheduleDate = LocalDateTime.now().plusSeconds(10);
+        LocalDateTime scheduleDate = LocalDateTime.now().plusSeconds(5);
         JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
         jobInputParametersBuilder.addInputParameter("schedule.date", scheduleDate, ParameterType.DATE);
         JobInputParameters jobInputParameters = jobInputParametersBuilder.toJobInputParameters();
@@ -52,8 +50,8 @@ public class SuccessfulScheduledJobUnitTest {
         // Assert that the job started date is closed to schedule date
         // We accept a delta between start date & scheduled date
         assertNotNull(jobContext.getStartTime(), "Start Time is null");
-        long diff = ChronoUnit.SECONDS.between(jobContext.getStartTime(), (LocalDateTime)jobInputParameters.getJobInputParameter("schedule.date"));
-        assertTrue(diff< ACCEPTED_DELTA_DURATION, "Job has started to late");
+        long diff = ChronoUnit.SECONDS.between(jobContext.getStartTime(), (LocalDateTime) jobInputParameters.getJobInputParameter("schedule.date"));
+        assertTrue(diff < ACCEPTED_DELTA_DURATION, "Job has started to late");
 
         assertNotNull(jobContext.getEndTime(), "End Time is null");
 
@@ -70,7 +68,7 @@ public class SuccessfulScheduledJobUnitTest {
 
             JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
             jobInputParametersBuilder.addInputParameter("param.1", "HELLO " + i, ParameterType.STRING);
-            jobInputParametersBuilder.addInputParameter("schedule.date", scheduleDate.plusSeconds(i*10), ParameterType.DATE);
+            jobInputParametersBuilder.addInputParameter("schedule.date", scheduleDate.plusSeconds(i * 5), ParameterType.DATE);
             JobInputParameters jobInputParameters = jobInputParametersBuilder.toJobInputParameters();
             Job job = new DefaultJob(jobInputParameters);
             jobsToLaunch.add(job);
@@ -92,8 +90,8 @@ public class SuccessfulScheduledJobUnitTest {
 
             // Assert that the job has started at schedule date
             assertNotNull(jobContext.getStartTime(), "Start Time is null");
-            long diff = ChronoUnit.SECONDS.between(jobContext.getStartTime(), (LocalDateTime)jobContext.getJobInputParameters().getJobInputParameter("schedule.date"));
-            assertTrue(diff< ACCEPTED_DELTA_DURATION, "Job has started to late");
+            long diff = ChronoUnit.SECONDS.between(jobContext.getStartTime(), (LocalDateTime) jobContext.getJobInputParameters().getJobInputParameter("schedule.date"));
+            assertTrue(diff < ACCEPTED_DELTA_DURATION, "Job has started to late");
 
             assertNotNull(jobContext.getEndTime(), "End Time is null");
 
@@ -109,34 +107,33 @@ public class SuccessfulScheduledJobUnitTest {
         List<Job> jobsToLaunch = new ArrayList<Job>();
 
 
-
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 5; i++) {
 
             JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
             jobInputParametersBuilder.addInputParameter("param.1", "HELLO " + i, ParameterType.STRING);
-            jobInputParametersBuilder.addInputParameter("schedule.date", scheduleDate.plusSeconds(i*10), ParameterType.DATE);
+            jobInputParametersBuilder.addInputParameter("schedule.date", scheduleDate.plusSeconds(i * 5), ParameterType.DATE);
             JobInputParameters jobInputParameters = jobInputParametersBuilder.toJobInputParameters();
             Job job = new DefaultJob(jobInputParameters);
             jobsToLaunch.add(job);
 
         }
 
-            jobManager.launchMany(jobsToLaunch);
+        jobManager.launchMany(jobsToLaunch);
 
 
-            for (Job job : jobsToLaunch) {
-                JobContext jobContext = job.getJobExecutionContext();
-                jobContext.getDone().await();
-                assertEquals(jobContext.getStatus(), JobState.SUCCESS, "Job should success");
+        for (Job job : jobsToLaunch) {
+            JobContext jobContext = job.getJobExecutionContext();
+            jobContext.getDone().await();
+            assertEquals(jobContext.getStatus(), JobState.SUCCESS, "Job should success");
 
-                // Assert that the job has started at schedule date
-                assertNotNull(jobContext.getStartTime(),"Start Time is null");
-                long diff = ChronoUnit.SECONDS.between(jobContext.getStartTime(), (LocalDateTime)jobContext.getJobInputParameters().getJobInputParameter("schedule.date"));
-                assertTrue(diff< ACCEPTED_DELTA_DURATION, "Job has started too late");
+            // Assert that the job has started at schedule date
+            assertNotNull(jobContext.getStartTime(), "Start Time is null");
+            long diff = ChronoUnit.SECONDS.between(jobContext.getStartTime(), (LocalDateTime) jobContext.getJobInputParameters().getJobInputParameter("schedule.date"));
+            assertTrue(diff < ACCEPTED_DELTA_DURATION, "Job has started too late");
 
 
-                assertNotNull(jobContext.getEndTime(),"End Time is null");
-            }
+            assertNotNull(jobContext.getEndTime(), "End Time is null");
+        }
 
 
     }

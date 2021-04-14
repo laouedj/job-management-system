@@ -1,7 +1,6 @@
 package org.prototype.study.job.launch;
 
 import org.prototype.study.job.Job;
-import org.prototype.study.job.state.JobState;
 
 import java.util.List;
 import java.util.stream.Collectors;

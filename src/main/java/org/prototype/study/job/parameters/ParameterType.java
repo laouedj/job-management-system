@@ -1,7 +1,5 @@
 package org.prototype.study.job.parameters;
 
-import org.prototype.study.job.parameters.AbstractDataType;
-
 import java.time.LocalDateTime;
 
 public enum ParameterType implements AbstractDataType {

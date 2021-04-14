@@ -1,21 +1,15 @@
 package org.prototype.study.job;
 
 import org.prototype.study.job.launch.*;
-import org.prototype.study.job.samples.emailsending.SendingMailsJob;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.PriorityBlockingQueue;
 
-public class DefaultJobManager implements JobManager{
+public class DefaultJobManager implements JobManager {
 
     private JobProducer jobProducer;
     private JobConsumer jobConsumer;
-    private  JobQueue jobQueue;
-
+    private JobQueue jobQueue;
 
 
     public DefaultJobManager() {

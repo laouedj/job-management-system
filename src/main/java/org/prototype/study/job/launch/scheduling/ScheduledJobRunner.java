@@ -5,7 +5,10 @@ import org.prototype.study.job.launch.AbstractJobRunner;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ScheduledJobRunner extends AbstractJobRunner {
 
@@ -23,7 +26,7 @@ public class ScheduledJobRunner extends AbstractJobRunner {
         //Should handle Time Zone
         LocalDateTime scheduleTime = (LocalDateTime) job.getJobExecutionContext().getJobInputParameters().getJobInputParameter("schedule.date");
         LocalDateTime currentTime = LocalDateTime.now();
-        long delay = Duration.between(currentTime,scheduleTime).getSeconds();
+        long delay = Duration.between(currentTime, scheduleTime).getSeconds();
         return delay;
     }
 }

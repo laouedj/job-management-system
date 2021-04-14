@@ -10,6 +10,7 @@ public class StateManager implements StateUpdater {
 
 
     private static final Map<JobState, StateUpdater> compositeStateUpdater;
+
     static {
         Map<JobState, StateUpdater> aMap = new HashMap<>();
         aMap.put(JobState.QUEUED, new QueuedStateUpdater());
@@ -24,7 +25,7 @@ public class StateManager implements StateUpdater {
         JobState actualState = job.getJobExecutionContext().getStatus();
         if (actualState == null) {
             throw new RuntimeException("This job has an unconsistence state" + job.getJobExecutionContext().getStatus());
-        }else {
+        } else {
             compositeStateUpdater.get(job.getJobExecutionContext().getStatus()).toNextState(job);
         }
     }

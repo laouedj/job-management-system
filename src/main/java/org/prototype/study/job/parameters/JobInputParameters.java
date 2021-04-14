@@ -20,18 +20,18 @@ public class JobInputParameters {
     }
 
     public Object getJobInputParameter(String key) {
-        if (!jobInputParameterMap.containsKey(key)){
-            return  null;
+        if (!jobInputParameterMap.containsKey(key)) {
+            return null;
         }
 
-        return  jobInputParameterMap.get(key).getValue();
+        return jobInputParameterMap.get(key).getValue();
     }
 
     public Map<String, JobInputParameter> getJobInputParameterMap() {
         return new LinkedHashMap<String, JobInputParameter>(jobInputParameterMap);
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return (jobInputParameterMap == null || jobInputParameterMap.isEmpty());
     }
 
@@ -40,7 +40,6 @@ public class JobInputParameters {
     public String toString() {
         return jobInputParameterMap.toString();
     }
-
 
 
 }

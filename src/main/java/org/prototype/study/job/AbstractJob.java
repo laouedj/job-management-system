@@ -2,7 +2,7 @@ package org.prototype.study.job;
 
 import org.prototype.study.job.parameters.JobInputParameters;
 
-public abstract class AbstractJob implements Job{
+public abstract class AbstractJob implements Job {
 
 
     protected JobContext jobContext;
@@ -24,7 +24,7 @@ public abstract class AbstractJob implements Job{
     abstract protected void doExecute();
 
     @Override
-    public void execute(){
+    public void execute() {
         validateParameters(this.jobContext.getJobInputParameters());
         doExecute();
     }
@@ -53,7 +53,6 @@ public abstract class AbstractJob implements Job{
         }
 
         //JobBuilder buildParameters()
-
 
 
     }

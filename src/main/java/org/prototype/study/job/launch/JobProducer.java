@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface JobProducer {
 
-    void produceOne(Job job) ;
+    void produceOne(Job job);
 
-    void produceMany(List<Job> jobs) ;
+    void produceMany(List<Job> jobs);
 
     void start();
 

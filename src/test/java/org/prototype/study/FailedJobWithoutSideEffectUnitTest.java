@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.prototype.study.job.*;
 import org.prototype.study.job.parameters.JobInputParametersBuilder;
 import org.prototype.study.job.parameters.ParameterType;
-import org.prototype.study.job.parameters.JobInputParameters;
-import org.prototype.study.job.parameters.JobInputParameter;
 import org.prototype.study.job.state.JobState;
 
 import java.time.LocalDateTime;
@@ -33,24 +31,22 @@ public class FailedJobWithoutSideEffectUnitTest {
 
         JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
         jobInputParametersBuilder.addInputParameter("param.key.1", "Job One ", ParameterType.STRING);
-        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
-        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4, ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3", LocalDateTime.now(), ParameterType.DATE);
         Job jobOne = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
 
 
         jobInputParametersBuilder = new JobInputParametersBuilder();
         jobInputParametersBuilder.addInputParameter("param.key.1", "Job Two", ParameterType.STRING);
-        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
-        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4, ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3", LocalDateTime.now(), ParameterType.DATE);
         Job jobTwo = new MockFailedJob(jobInputParametersBuilder.toJobInputParameters());
-
-
 
 
         jobInputParametersBuilder = new JobInputParametersBuilder();
         jobInputParametersBuilder.addInputParameter("param.key.1", "Job Three", ParameterType.STRING);
-        jobInputParametersBuilder.addInputParameter("param.key.2", 4 , ParameterType.LONG);
-        jobInputParametersBuilder.addInputParameter("param.key.3",  LocalDateTime.now(), ParameterType.DATE);
+        jobInputParametersBuilder.addInputParameter("param.key.2", 4, ParameterType.LONG);
+        jobInputParametersBuilder.addInputParameter("param.key.3", LocalDateTime.now(), ParameterType.DATE);
         Job jobThree = new DefaultJob(jobInputParametersBuilder.toJobInputParameters());
 
 
@@ -72,9 +68,9 @@ public class FailedJobWithoutSideEffectUnitTest {
         JobContext jobContextTwo = jobTwo.getJobExecutionContext();
         jobContextTwo.getDone().await();
         assertEquals(jobContextTwo.getStatus(), JobState.FAILED, "Job should failed");
-        assertNotNull(jobContextTwo.getStartTime(),"Start Time should not be null");
-        assertNotNull(jobContextTwo.getEndTime(),"End Time should not be null");
-        assertNotNull(jobContextTwo.getError(),"Error should not be null");
+        assertNotNull(jobContextTwo.getStartTime(), "Start Time should not be null");
+        assertNotNull(jobContextTwo.getEndTime(), "End Time should not be null");
+        assertNotNull(jobContextTwo.getError(), "Error should not be null");
 
 
         JobContext jobContextThree = jobThree.getJobExecutionContext();

@@ -9,33 +9,32 @@ import org.prototype.study.job.state.JobState;
 
 public class SendingMailsApplication {
 
-    public static void main( String[] args )  {
+    public static void main(String[] args) {
 
         JobState resultState = null;
 
         JobManager jobManager = new DefaultJobManager();
+        JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
+        jobInputParametersBuilder.addInputParameter("file.path", "emails.txt", ParameterType.STRING);
+        Job sendingMailsJob = new SendingMailsJob(jobInputParametersBuilder.toJobInputParameters());
+
+
         jobManager.start();
 
-        try{
-
-            JobInputParametersBuilder jobInputParametersBuilder = new JobInputParametersBuilder();
-            jobInputParametersBuilder.addInputParameter("file.path", "emails.txt",ParameterType.STRING);
-            Job sendingMailsJob = new SendingMailsJob(jobInputParametersBuilder.toJobInputParameters());
-
+        try {
             jobManager.launchOne(sendingMailsJob);
-
             sendingMailsJob.getJobExecutionContext().getDone().await();
-            resultState = sendingMailsJob.getJobExecutionContext().getStatus();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error occured when executing sending mails job");
             e.printStackTrace();
-        }finally {
+        } finally {
+            resultState = sendingMailsJob.getJobExecutionContext().getStatus();
             jobManager.shutdown();
         }
-        //jobManager.shutdown();
+
         System.out.println("Job finished with status " + resultState);
-        System.out.println(Thread.currentThread().getName() + " current thread ");
+
 
     }
 }

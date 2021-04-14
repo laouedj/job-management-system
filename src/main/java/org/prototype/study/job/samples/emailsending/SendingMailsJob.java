@@ -19,6 +19,12 @@ public class SendingMailsJob extends AbstractJob {
     protected void doExecute() {
 
         String filePath = (String) getJobExecutionContext().getJobInputParameters().getJobInputParameter("file.path");
+
+        if (filePath == null) {
+            throw new IllegalArgumentException("File Path of email list should be specified");
+        }
+
+
         System.out.println("Scanning file ... " + filePath);
 
         Scanner fileScanner = new Scanner(SendingMailsJob.class.getResourceAsStream(filePath), "UTF-8");
@@ -29,10 +35,10 @@ public class SendingMailsJob extends AbstractJob {
                 String line = fileScanner.nextLine();
 
                 if ((line != null) && !line.isEmpty()) {
-                    String [] parameters = line.split(";");
+                    String[] parameters = line.split(";");
                     String destination = parameters[0];
                     String message = parameters[1];
-                    this.mailSender.send(destination,message);
+                    this.mailSender.send(destination, message);
                 }
             }
         } finally {
